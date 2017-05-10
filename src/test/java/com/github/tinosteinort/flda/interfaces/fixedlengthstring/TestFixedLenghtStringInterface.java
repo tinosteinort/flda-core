@@ -36,38 +36,38 @@ public class TestFixedLenghtStringInterface {
 
     public Person doImport(final String data) {
 
-        final Person obj = new Person();
+        final Person person = new Person();
 
         final PersonFixedLengthStringReader reader = new PersonFixedLengthStringReader(config, new FixedLengthString(data));
 
-        reader.firstname().ifPresent(obj::setFirstname);
-        reader.lastname().ifPresent(obj::setLastname);
-        reader.age().ifPresent(obj::setAge);
+        person.setFirstname(reader.firstname());
+        person.setLastname(reader.lastname());
+        person.setAge(reader.age());
 
-        return obj;
+        return person;
     }
 
     @Test public void testExport() throws UnsupportedEncodingException {
 
-        final Person obj = new Person();
-        obj.setFirstname("Dagobert");
-        obj.setLastname("Duck");
-        obj.setAge(100);
+        final Person person = new Person();
+        person.setFirstname("Dagobert");
+        person.setLastname("Duck");
+        person.setAge(100);
 
         Assert.assertEquals(
                 new FixedLengthString("Dagobert  Duck      100"),
-                doExport(obj));
+                doExport(person));
     }
 
-    public FixedLengthString doExport(final Person obj) {
+    public FixedLengthString doExport(final Person person) {
 
         final FixedLengthString row = new FixedLengthString(23, ' ');
 
         final PersonFixedLengthStringWriter writer = new PersonFixedLengthStringWriter(config, row);
 
-        writer.firstname(obj.getFirstname());
-        writer.lastname(obj.getLastname());
-        writer.age(obj.getAge());
+        writer.firstname(person.getFirstname());
+        writer.lastname(person.getLastname());
+        writer.age(person.getAge());
 
         return row;
     }
@@ -86,9 +86,9 @@ public class TestFixedLenghtStringInterface {
 
         final PersonFixedLengthStringReader reader = new PersonFixedLengthStringReader(localConfig, new FixedLengthString(dataFromFile));
 
-        reader.firstname().ifPresent(person::setFirstname);
-        reader.lastname().ifPresent(person::setLastname);
-        reader.age().ifPresent(person::setAge);
+        person.setFirstname(reader.firstname());
+        person.setLastname(reader.lastname());
+        person.setAge(reader.age());
 
         Assert.assertEquals("Tick", person.getFirstname());
         Assert.assertEquals("Duck", person.getLastname());
@@ -101,18 +101,18 @@ public class TestFixedLenghtStringInterface {
                 .registerWriter(PersonDescriptor.AGE, new RightAlignedIntegerAttributeWriter()) // override default behaviour for special Attribute
                 .build();
 
-        final Person obj = new Person();
-        obj.setFirstname("Tick");
-        obj.setLastname("Duck");
-        obj.setAge(7); // Age should be right aligned, custom AttributeWriter required for writing
+        final Person person = new Person();
+        person.setFirstname("Tick");
+        person.setLastname("Duck");
+        person.setAge(7); // Age should be right aligned, custom AttributeWriter required for writing
 
         final FixedLengthString row = new FixedLengthString(23, ' ');
 
         final PersonFixedLengthStringWriter writer = new PersonFixedLengthStringWriter(localConfig, row);
 
-        writer.firstname(obj.getFirstname());
-        writer.lastname(obj.getLastname());
-        writer.age(obj.getAge());
+        writer.firstname(person.getFirstname());
+        writer.lastname(person.getLastname());
+        writer.age(person.getAge());
 
         Assert.assertEquals(
                 new FixedLengthString("Tick      Duck        7"),
