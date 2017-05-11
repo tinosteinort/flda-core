@@ -2,8 +2,10 @@ package com.github.tinosteinort.flda.interfaces.fixedlengthstring.reader;
 
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthString;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthStringAttribute;
-import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class IntegerAttributeReaderTest {
 
@@ -15,14 +17,14 @@ public class IntegerAttributeReaderTest {
     private final IntegerAttributeReader reader = new IntegerAttributeReader();
 
     @Test public void readOne() {
-        Assert.assertEquals((Integer) 1234, reader.read(data, NUMBER_ONE));
+        assertEquals((Integer) 1234, reader.read(data, NUMBER_ONE));
     }
 
     @Test public void readTwo() {
-        Assert.assertNull(reader.read(data, NUMBER_TWO));
+        assertNull(reader.read(data, NUMBER_TWO));
     }
 
     @Test public void readThree() {
-        Assert.assertEquals((Integer) (-567), reader.read(data, NUMBER_THREE));
+        assertEquals((Integer) (-567), reader.read(data, NUMBER_THREE));
     }
 }
