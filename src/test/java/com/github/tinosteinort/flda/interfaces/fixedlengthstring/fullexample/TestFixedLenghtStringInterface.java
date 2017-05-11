@@ -1,9 +1,11 @@
-package com.github.tinosteinort.flda.interfaces.fixedlengthstring;
+package com.github.tinosteinort.flda.interfaces.fixedlengthstring.fullexample;
 
 import com.github.tinosteinort.flda.accessor.AccessorConfig;
 import com.github.tinosteinort.flda.accessor.AccessorConfigBuilder;
 import com.github.tinosteinort.flda.accessor.reader.ReadAccessor;
 import com.github.tinosteinort.flda.accessor.writer.WriteAccessor;
+import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthString;
+import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthStringAttribute;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.reader.IntegerAttributeReader;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.reader.StringAttributeReader;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.writer.IntegerAttributeWriter;
