@@ -13,7 +13,7 @@
     <name>${project.artifactId}-${project.version}</name>
     <url>https://github.com/tinosteinort/flda</url>
 
-    <description>FLDA - Fix Length Data Accessor</description>
+    <description>FLDA - Fixed Length Data Accessor</description>
 
     <licenses>
         <license>

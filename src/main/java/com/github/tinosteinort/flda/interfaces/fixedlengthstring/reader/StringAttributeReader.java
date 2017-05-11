@@ -7,6 +7,10 @@ import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthStri
 public class StringAttributeReader implements AttributeReader<FixedLengthString, String, FixedLengthStringAttribute<String>> {
 
     @Override public String read(final FixedLengthString data, final FixedLengthStringAttribute<String> attribute) {
-        return data.getString().substring(attribute.getIndex(), attribute.getIndex() + attribute.getLength()).trim();
+        final String value = data.getString().substring(attribute.getIndex(), attribute.getIndex() + attribute.getLength()).trim();
+        if (value.equals("")) {
+            return null;
+        }
+        return value;
     }
 }
