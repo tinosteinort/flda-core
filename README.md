@@ -13,6 +13,18 @@ This Library should ease the Access of Fixed Length Data. Fixed
  a fix Length, and so the Attributes, this Library should help to
  Access the Data of the Record.
 
+# Maven
+INFO: Not yet available in Maven Central, WIP
+
+Include the following Artifact to use the `BeanRepository`:
+```xml
+<dependency>
+    <groupId>com.github.tinosteinort</groupId>
+    <artifactId>flda</artifactId>
+    <version>0.0.1</version>
+</dependency>
+```
+
 # Example
 In Library supports a build in `FixedLengthString`. E.g. it can be 
  used if the Data is stored Line by Line in a File. See
