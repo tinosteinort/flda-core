@@ -16,7 +16,7 @@ import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
 
-public class TestFixedLenghtStringInterface {
+public class FixedLengthStringInterfaceTest {
 
     private final AccessorConfig<FixedLengthString, FixedLengthStringAttribute<?>> config = new AccessorConfigBuilder<FixedLengthString, FixedLengthStringAttribute<?>>()
             .registerReader(String.class, new StringAttributeReader())

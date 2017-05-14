@@ -15,7 +15,9 @@ This Library should ease the Access of Fixed Length Data. Fixed
 
 # Example
 In Library supports a build in `FixedLengthString`. E.g. it can be 
- used if the Data is stored Line by Line in a File.
+ used if the Data is stored Line by Line in a File. See
+ [FixedLengthStringInterfaceTest](src/test/java/com/github/tinosteinort/flda/interfaces/fixedlengthstring/fullexample/FixedLengthStringInterfaceTest.java)
+ for a full working Example.
 
 ## Example File and Description
 Our File contains a List of Fruits and Vegetable. The Attributes are:
