@@ -19,7 +19,7 @@ In Library supports a build in `FixedLengthString`. E.g. it can be
 
 ## Example File and Description
 Our File contains a List of Fruits and Vegetable. The Attributes are:
- Type, Name and Amount. One Record has 17 Characters
+ Type, Name and Amount. One Record has 17 Characters.
  
 Content of the `Data.txt`:
 ```
@@ -31,12 +31,12 @@ VegetablePotato23
 A Descriptor describes each Attribute which should be read or written.
  In Case of the `FixedLengthString`, an Attributes needs a Type, StartIndex
  and Length. With this Information, all Attributes can be accessed.
-```
+```java
 class DataDescriptor {
 
-    static final FixedLengthStringAttribute<String> TYPE = new FixedLengthStringAttribute<>(String.class, 0, 10);
-    static final FixedLengthStringAttribute<String> NAME = new FixedLengthStringAttribute<>(String.class, 10, 10);
-    static final FixedLengthStringAttribute<Integer> AMOUNT = new FixedLengthStringAttribute<>(Integer.class, 20, 3);
+    static final FixedLengthStringAttribute<String> TYPE = new FixedLengthStringAttribute<>(String.class, 0, 9);
+    static final FixedLengthStringAttribute<String> NAME = new FixedLengthStringAttribute<>(String.class, 9, 6);
+    static final FixedLengthStringAttribute<Integer> AMOUNT = new FixedLengthStringAttribute<>(Integer.class, 15, 2);
 
     private PersonDescriptor() {
 
@@ -47,17 +47,19 @@ class DataDescriptor {
 ## Accessing the Data Record
 Before the Data can be accessed, we need a Configuration of how a
  Type or Attribute has to be handled.
-```
+```java
 final AccessorConfig<FixedLengthString, FixedLengthStringAttribute<?>> config = new AccessorConfigBuilder<FixedLengthString, FixedLengthStringAttribute<?>>()
             .registerReader(String.class, new StringAttributeReader())
-            .registerReader(Integer.class, new IntegerAttributeReader())
             .registerWriter(String.class, new StringAttributeWriter())
             .registerWriter(Integer.class, new IntegerAttributeWriter())
+            .registerWriter(DataDescriptor.AMOUNT, new RightAlignedIntegerAttributeReader())
             .build();
 ```
+It is also possible to register Readers and Writers for Atributes, instead of Classes.
+ Because of this, Customization is possible.
 
 Get the Content of the File in `FixedLengthString`s:
-```
+```java
 List<FixedLengthString> data = 
         Files.readAllLines(Paths.get("Data.txt"))
         .stream()
@@ -66,7 +68,7 @@ List<FixedLengthString> data =
 ```
 
 Than, the FixedLengthStrings can be accessed e.g. with the `ReadAccessor`
-```
+```java
 ReadAccessor<FixedLengthString, FixedLengthStringAttribute<?>> readAccessor = new ReadAccessor<>(config, data)
 final String type = readAccessor.read(DataDescriptor.TYPE);
 final String name = readAccessor.read(DataDescriptor.NAME);
@@ -74,7 +76,7 @@ final int amount = readAccessor.read(DataDescriptor.AMOUNT);
 ```
 
 The other way is to write:
-```
+```java
 FixedLengthString data = new FixedLengthString(17, ' ');
 WriteAccessor<FixedLengthString, FixedLengthStringAttribute<?>> writeAccessor = new WriteAccessor<>(config, data)
 readAccessor.write(DataDescriptor.TYPE, "Vegetable");
