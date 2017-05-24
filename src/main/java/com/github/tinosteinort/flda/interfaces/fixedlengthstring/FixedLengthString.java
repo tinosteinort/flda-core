@@ -5,43 +5,46 @@ import java.util.Objects;
 
 public class FixedLengthString {
 
-    private String value;
+    private final char[] value;
 
     public FixedLengthString(final int length, final char initialFiller) {
-        final char[] data = new char[length];
-        Arrays.fill(data, initialFiller);
-        this.value = String.valueOf(data);
+        this.value = new char[length];
+        Arrays.fill(value, initialFiller);
     }
 
     public FixedLengthString(final String value) {
-        this.value = Objects.requireNonNull(value, "String must not be NULL");
+        this.value = Objects.requireNonNull(value, "String must not be NULL")
+                .toCharArray();
     }
 
-    public void update(final String value) {
-        final String newValue = Objects.requireNonNull(value, "String must not be NULL");
-        if (newValue.length() != this.value.length()) {
-            throw new IllegalArgumentException("Length has to be equal. Current: " + value.length() + " New: " + newValue.length());
+    public void update(final int position, final String value) {
+        if (value != null && position + value.length() > this.value.length) {
+            throw new IllegalArgumentException("Value too long for String");
         }
-        this.value = newValue;
+        final char[] newValue = Objects.requireNonNull(value, "String must not be NULL")
+                .toCharArray();
+        System.arraycopy(newValue, 0, this.value, position, newValue.length);
     }
 
     public String getString() {
-        return value;
+        return String.valueOf(value);
     }
 
-    @Override public boolean equals(Object o) {
-        if (this == o)
+    @Override public boolean equals(final Object o) {
+        if (this == o) {
             return true;
-        if (o == null || getClass() != o.getClass())
+        }
+        if (o == null || getClass() != o.getClass()) {
             return false;
+        }
 
         FixedLengthString that = (FixedLengthString) o;
 
-        return value.equals(that.value);
+        return Arrays.equals(value, that.value);
     }
 
     @Override public int hashCode() {
-        return value.hashCode();
+        return Arrays.hashCode(value);
     }
 
     @Override public String toString() {

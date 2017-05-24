@@ -16,19 +16,19 @@ public class FixedLengthStringTest {
 
     @Test public void update() {
         final FixedLengthString data = new FixedLengthString(5, ' ');
-        data.update("-----");
+        data.update(0, "-----");
         assertEquals("-----", data.getString());
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void updateTooShort() {
+    @Test public void updateMiddle() {
         final FixedLengthString data = new FixedLengthString(5, ' ');
-        data.update("---");
+        data.update(1, "--");
+        assertEquals(" --  ", data.getString());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void updateTooLong() {
         final FixedLengthString data = new FixedLengthString(5, ' ');
-        data.update("1234567");
+        data.update(0, "123456");
     }
 }

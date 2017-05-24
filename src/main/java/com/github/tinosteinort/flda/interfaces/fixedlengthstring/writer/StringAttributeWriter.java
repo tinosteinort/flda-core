@@ -11,10 +11,6 @@ public class StringAttributeWriter implements AttributeWriter<FixedLengthString,
 
     @Override public void write(final FixedLengthString data, final FixedLengthStringAttribute<String> attribute, final String value) {
 
-        final String before = data.getString().substring(0, attribute.getIndex());
-        final String after = data.getString().substring(attribute.getIndex() + attribute.getLength());
-        final String newValue = before + stringFitter.fit(value, attribute.getLength()) + after;
-
-        data.update(newValue);
+        data.update(attribute.getIndex(), stringFitter.fit(value, attribute.getLength()));
     }
 }

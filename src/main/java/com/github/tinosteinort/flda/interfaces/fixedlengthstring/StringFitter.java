@@ -29,7 +29,7 @@ public class StringFitter {
             switch (alignment) {
                 case LEFT: return value + String.valueOf(data);
                 case RIGHT: return String.valueOf(data) + value;
-                default: throw new IllegalArgumentException("Case not allowed: " + alignment);
+                default: throw new IllegalArgumentException("Not a valid Alignment: " + alignment);
             }
         }
         else {

@@ -11,14 +11,6 @@ public class IntegerAttributeWriter implements AttributeWriter<FixedLengthString
 
     @Override public void write(final FixedLengthString data, final FixedLengthStringAttribute<Integer> attribute, final Integer value) {
 
-        final String before = data.getString().substring(0, attribute.getIndex());
-        final String after = data.getString().substring(attribute.getIndex() + attribute.getLength());
-        final String newValue = before + fillOrCut(value, attribute) + after;
-
-        data.update(newValue);
-    }
-
-    private String fillOrCut(final Integer intValue, final FixedLengthStringAttribute<Integer> attribute) {
-        return stringFitter.fit(String.valueOf(intValue), attribute.getLength());
+        data.update(attribute.getIndex(), stringFitter.fit(String.valueOf(value), attribute.getLength()));
     }
 }
