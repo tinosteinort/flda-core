@@ -5,6 +5,8 @@ import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthStri
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthStringAttribute;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.StringFitter;
 
+import java.util.Objects;
+
 public class IntegerAttributeWriter implements AttributeWriter<FixedLengthString, Integer, FixedLengthStringAttribute<Integer>> {
 
     private final StringFitter stringFitter;
@@ -19,6 +21,7 @@ public class IntegerAttributeWriter implements AttributeWriter<FixedLengthString
 
     @Override public void write(final FixedLengthString data, final FixedLengthStringAttribute<Integer> attribute, final Integer value) {
 
-        data.update(attribute.getIndex(), stringFitter.fit(String.valueOf(value), attribute.getLength()));
+        final String stringValue = Objects.toString(value, "");
+        data.update(attribute.getIndex(), stringFitter.fit(stringValue, attribute.getLength()));
     }
 }
