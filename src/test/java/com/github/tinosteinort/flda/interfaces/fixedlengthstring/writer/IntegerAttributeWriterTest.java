@@ -43,4 +43,10 @@ public class IntegerAttributeWriterTest {
         writer.write(data, INTEGER_THREE, 7890123);
         assertEquals("      7890", data.getString());
     }
+
+    @Test public void writeNull() {
+        final FixedLengthString data = new FixedLengthString("          ");
+        writer.write(data, INTEGER_ONE, null);
+        assertEquals("          ", data.getString());
+    }
 }

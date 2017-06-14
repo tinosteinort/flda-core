@@ -65,7 +65,7 @@ final AccessorConfig<FixedLengthString, FixedLengthStringAttribute<?>> config = 
             .registerReader(String.class, new StringAttributeReader())
             .registerWriter(String.class, new StringAttributeWriter())
             .registerReader(Integer.class, new IntegerAttributeReader())
-            .registerWriter(DataDescriptor.AMOUNT, new RightAlignedIntegerAttributeReader())
+            .registerWriter(DataDescriptor.AMOUNT, new IntegerAttributeWriter(StringFitter.Alignment.RIGHT, ' '))
             .build();
 ```
 It is also possible to register Readers and Writers for Atributes, instead of Classes.

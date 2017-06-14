@@ -6,10 +6,10 @@ import com.github.tinosteinort.flda.accessor.reader.ReadAccessor;
 import com.github.tinosteinort.flda.accessor.writer.WriteAccessor;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthString;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthStringAttribute;
+import com.github.tinosteinort.flda.interfaces.fixedlengthstring.StringFitter;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.reader.IntegerAttributeReader;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.reader.StringAttributeReader;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.writer.IntegerAttributeWriter;
-import com.github.tinosteinort.flda.interfaces.fixedlengthstring.writer.RightAlignedIntegerAttributeWriter;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.writer.StringAttributeWriter;
 import org.junit.Assert;
 import org.junit.Test;
@@ -100,7 +100,7 @@ public class FixedLengthStringInterfaceTest {
     @Test public void testExportCustomAttribute() {
 
         final AccessorConfig<FixedLengthString, FixedLengthStringAttribute<?>> localConfig = new AccessorConfigBuilder<>(config)
-                .registerWriter(PersonDescriptor.AGE, new RightAlignedIntegerAttributeWriter()) // override default behaviour for special Attribute
+                .registerWriter(PersonDescriptor.AGE, new IntegerAttributeWriter(StringFitter.Alignment.RIGHT, ' ')) // override default behaviour for special Attribute
                 .build();
 
         final Person person = new Person();
