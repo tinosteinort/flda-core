@@ -7,21 +7,21 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-public class StringAttributeReaderTest {
+public class StringReaderTest {
 
     private final FixedLengthString data = new FixedLengthString("123   AbCd");
     private static final FixedLengthStringAttribute<String> STRING_ONE = new FixedLengthStringAttribute<>(String.class, 0, 3);
     private static final FixedLengthStringAttribute<String> STRING_TWO = new FixedLengthStringAttribute<>(String.class, 3, 3);
     private static final FixedLengthStringAttribute<String> STRING_THREE = new FixedLengthStringAttribute<>(String.class, 6, 4);
 
-    private final StringAttributeReader reader = new StringAttributeReader();
+    private final StringReader reader = new StringReader();
 
     @Test public void readOne() {
         assertEquals("123", reader.read(data, STRING_ONE));
     }
 
     @Test public void readTwo() {
-        assertNull(reader.read(data, STRING_TWO));
+        assertEquals("", reader.read(data, STRING_TWO));
     }
 
     @Test public void readThree() {
