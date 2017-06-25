@@ -49,7 +49,7 @@ public class FixedLengthString {
 
     @Override public String toString() {
         return "FixedLengthString{" +
-                "value='" + value + '\'' +
+                "value='" + getString() + '\'' +
                 '}';
     }
 }
