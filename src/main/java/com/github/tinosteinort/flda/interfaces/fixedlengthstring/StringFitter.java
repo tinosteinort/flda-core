@@ -33,7 +33,11 @@ public class StringFitter {
             }
         }
         else {
-            return value.substring(0, length);
+            switch (alignment) {
+                case LEFT: return value.substring(0, length);
+                case RIGHT: return value.substring(value.length() - length);
+                default: throw new IllegalArgumentException("Not a valid Alignment: " + alignment);
+            }
         }
     }
 }

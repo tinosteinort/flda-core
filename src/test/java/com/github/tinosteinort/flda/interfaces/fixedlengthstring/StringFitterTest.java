@@ -21,7 +21,7 @@ public class StringFitterTest {
         assertEquals("  deF", rightAlignedFitter.fit("deF", 5));
     }
     @Test public void fitRightCut() {
-        assertEquals("AbcDe", rightAlignedFitter.fit("AbcDeF", 5));
+        assertEquals("2345", rightAlignedFitter.fit("12345", 4));
     }
 
     @Test public void fitFillUpNull() {
