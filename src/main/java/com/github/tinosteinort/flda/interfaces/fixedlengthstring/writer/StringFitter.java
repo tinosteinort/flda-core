@@ -1,4 +1,4 @@
-package com.github.tinosteinort.flda.interfaces.fixedlengthstring;
+package com.github.tinosteinort.flda.interfaces.fixedlengthstring.writer;
 
 import java.util.Arrays;
 

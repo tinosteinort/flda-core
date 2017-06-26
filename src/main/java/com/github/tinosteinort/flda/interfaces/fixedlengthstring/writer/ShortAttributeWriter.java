@@ -1,7 +1,5 @@
 package com.github.tinosteinort.flda.interfaces.fixedlengthstring.writer;
 
-import com.github.tinosteinort.flda.interfaces.fixedlengthstring.StringFitter;
-
 public class ShortAttributeWriter extends NumberAttributeWriter<Short> {
 
     public ShortAttributeWriter() {

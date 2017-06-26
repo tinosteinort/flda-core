@@ -1,7 +1,5 @@
 package com.github.tinosteinort.flda.interfaces.fixedlengthstring.writer;
 
-import com.github.tinosteinort.flda.interfaces.fixedlengthstring.StringFitter;
-
 public class ByteAttributeWriter extends NumberAttributeWriter<Byte> {
 
     public ByteAttributeWriter() {

@@ -1,5 +1,6 @@
-package com.github.tinosteinort.flda.interfaces.fixedlengthstring;
+package com.github.tinosteinort.flda.interfaces.fixedlengthstring.writer;
 
+import com.github.tinosteinort.flda.interfaces.fixedlengthstring.writer.StringFitter;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

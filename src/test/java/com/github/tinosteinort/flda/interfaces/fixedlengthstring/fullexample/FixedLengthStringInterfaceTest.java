@@ -6,11 +6,11 @@ import com.github.tinosteinort.flda.accessor.reader.ReadAccessor;
 import com.github.tinosteinort.flda.accessor.writer.WriteAccessor;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthString;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthStringAttribute;
-import com.github.tinosteinort.flda.interfaces.fixedlengthstring.StringFitter;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.reader.IntegerAttributeReader;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.reader.StringAttributeReader;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.writer.IntegerAttributeWriter;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.writer.StringAttributeWriter;
+import com.github.tinosteinort.flda.interfaces.fixedlengthstring.writer.StringFitter;
 import org.junit.Assert;
 import org.junit.Test;
 
