@@ -18,6 +18,8 @@ public class IntegerAttributeReaderTest {
         assertEquals((Integer) 0x80000000, reader.read(data, attribute));
         // TODO warum geht das nicht?
         // assertEquals((Integer) -2147483648, reader.read(data, attribute));
+        // Das geht:
+        // assertEquals((Integer) (int) -2147483648, reader.read(data, attribute));
     }
 
     @Test public void maxValue() {
