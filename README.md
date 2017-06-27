@@ -20,7 +20,7 @@ Include the following Artifact to use the `BeanRepository`:
 <dependency>
     <groupId>com.github.tinosteinort</groupId>
     <artifactId>flda</artifactId>
-    <version>0.0.1</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
