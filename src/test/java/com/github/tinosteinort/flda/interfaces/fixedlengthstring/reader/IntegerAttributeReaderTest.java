@@ -9,22 +9,34 @@ import static org.junit.Assert.assertNull;
 
 public class IntegerAttributeReaderTest {
 
-    private final FixedLengthString data = new FixedLengthString("1234    -567");
-    private static final FixedLengthStringAttribute<Integer> NUMBER_ONE = new FixedLengthStringAttribute<>(Integer.class, 0, 4);
-    private static final FixedLengthStringAttribute<Integer> NUMBER_TWO = new FixedLengthStringAttribute<>(Integer.class, 4, 4);
-    private static final FixedLengthStringAttribute<Integer> NUMBER_THREE = new FixedLengthStringAttribute<>(Integer.class, 8, 4);
-
     private final IntegerAttributeReader reader = new IntegerAttributeReader();
 
-    @Test public void readOne() {
-        assertEquals((Integer) 1234, reader.read(data, NUMBER_ONE));
+    @Test public void minValue() {
+        final FixedLengthString data = new FixedLengthString("-2147483648");
+        final FixedLengthStringAttribute<Integer> attribute = new FixedLengthStringAttribute<>(Integer.class, 0, 11);
+
+        assertEquals((Integer) 0x80000000, reader.read(data, attribute));
     }
 
-    @Test public void readTwo() {
-        assertNull(reader.read(data, NUMBER_TWO));
+    @Test public void maxValue() {
+        final FixedLengthString data = new FixedLengthString("2147483647");
+        final FixedLengthStringAttribute<Integer> attribute = new FixedLengthStringAttribute<>(Integer.class, 0, 10);
+
+        assertEquals((Integer) 2147483647, reader.read(data, attribute));
     }
 
-    @Test public void readThree() {
-        assertEquals((Integer) (-567), reader.read(data, NUMBER_THREE));
+    @Test public void nullValue() {
+        final FixedLengthString data = new FixedLengthString("     ");
+        final FixedLengthStringAttribute<Integer> attribute = new FixedLengthStringAttribute<>(Integer.class, 0, 5);
+
+        assertNull(reader.read(data, attribute));
+    }
+
+    @Test(expected = NumberFormatException.class)
+    public void valueOutOfBounds() {
+        final FixedLengthString data = new FixedLengthString("2147483648");
+        final FixedLengthStringAttribute<Integer> attribute = new FixedLengthStringAttribute<>(Integer.class, 0, 10);
+
+        reader.read(data, attribute);
     }
 }

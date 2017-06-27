@@ -9,22 +9,19 @@ import static org.junit.Assert.assertNull;
 
 public class StringAttributeReaderTest {
 
-    private final FixedLengthString data = new FixedLengthString("123   AbCd");
-    private static final FixedLengthStringAttribute<String> STRING_ONE = new FixedLengthStringAttribute<>(String.class, 0, 3);
-    private static final FixedLengthStringAttribute<String> STRING_TWO = new FixedLengthStringAttribute<>(String.class, 3, 3);
-    private static final FixedLengthStringAttribute<String> STRING_THREE = new FixedLengthStringAttribute<>(String.class, 6, 4);
-
     private final StringAttributeReader reader = new StringAttributeReader();
 
-    @Test public void readOne() {
-        assertEquals("123", reader.read(data, STRING_ONE));
+    @Test public void readValue() {
+        final FixedLengthString data = new FixedLengthString("AbcdeF");
+        final FixedLengthStringAttribute<String> attribute = new FixedLengthStringAttribute<>(String.class, 0, 6);
+
+        assertEquals("AbcdeF", reader.read(data, attribute));
     }
 
-    @Test public void readTwo() {
-        assertNull(reader.read(data, STRING_TWO));
-    }
+    @Test public void readNullValue() {
+        final FixedLengthString data = new FixedLengthString("      ");
+        final FixedLengthStringAttribute<String> attribute = new FixedLengthStringAttribute<>(String.class, 0, 6);
 
-    @Test public void readThree() {
-        assertEquals("AbCd", reader.read(data, STRING_THREE));
+        assertNull(reader.read(data, attribute));
     }
 }

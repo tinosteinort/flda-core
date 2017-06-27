@@ -1,16 +1,15 @@
 package com.github.tinosteinort.flda.interfaces.fixedlengthstring.writer;
 
-import com.github.tinosteinort.flda.accessor.writer.AttributeWriter;
-import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthString;
-import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthStringAttribute;
-import com.github.tinosteinort.flda.interfaces.fixedlengthstring.StringFitter;
+public class IntegerAttributeWriter extends NumberAttributeWriter<Integer> {
 
-public class IntegerAttributeWriter implements AttributeWriter<FixedLengthString, Integer, FixedLengthStringAttribute<Integer>> {
+    public IntegerAttributeWriter() {
+    }
 
-    private final StringFitter stringFitter = new StringFitter(StringFitter.Alignment.LEFT, ' ');
+    public IntegerAttributeWriter(final StringFitter.Alignment alignment, final char filler) {
+        super(alignment, filler);
+    }
 
-    @Override public void write(final FixedLengthString data, final FixedLengthStringAttribute<Integer> attribute, final Integer value) {
-
-        data.update(attribute.getIndex(), stringFitter.fit(String.valueOf(value), attribute.getLength()));
+    @Override protected String nullSafeConvertToString(final Integer value) {
+        return String.valueOf(value);
     }
 }

@@ -31,4 +31,10 @@ public class StringAttributeWriterTest {
         writer.write(data, STRING_THREE, "ABCd");
         assertEquals("      ABCd", data.getString());
     }
+
+    @Test public void writeNull() {
+        final FixedLengthString data = new FixedLengthString("          ");
+        writer.write(data, STRING_ONE, null);
+        assertEquals("          ", data.getString());
+    }
 }

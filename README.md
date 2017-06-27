@@ -14,7 +14,6 @@ This Library should ease the Access of Fixed Length Data. Fixed
  Access the Data of the Record.
 
 # Maven
-INFO: Not yet available in Maven Central, WIP
 
 Include the following Artifact to use the `BeanRepository`:
 ```xml
@@ -32,7 +31,7 @@ In Library supports a build in `FixedLengthString`. E.g. it can be
  for a full working Example.
 
 ## Example File and Description
-Our File contains a List of Fruits and Vegetable. The Attributes are:
+Our File contains a List of Fruits and Vegetables. The Attributes are:
  Type, Name and Amount. One Record has 17 Characters.
  
 Content of the `Data.txt`:
@@ -43,7 +42,7 @@ VegetablePotato23
 ```
 
 A Descriptor describes each Attribute which should be read or written.
- In Case of the `FixedLengthString`, an Attributes needs a Type, StartIndex
+ In Case of the `FixedLengthString`, an Attribute needs a Type, StartIndex
  and Length. With this Information, all Attributes can be accessed.
 ```java
 class DataDescriptor {
@@ -65,8 +64,8 @@ Before the Data can be accessed, we need a Configuration of how a
 final AccessorConfig<FixedLengthString, FixedLengthStringAttribute<?>> config = new AccessorConfigBuilder<FixedLengthString, FixedLengthStringAttribute<?>>()
             .registerReader(String.class, new StringAttributeReader())
             .registerWriter(String.class, new StringAttributeWriter())
-            .registerWriter(Integer.class, new IntegerAttributeWriter())
-            .registerWriter(DataDescriptor.AMOUNT, new RightAlignedIntegerAttributeReader())
+            .registerReader(Integer.class, new IntegerAttributeReader())
+            .registerWriter(DataDescriptor.AMOUNT, new IntegerAttributeWriter(StringFitter.Alignment.RIGHT, ' '))
             .build();
 ```
 It is also possible to register Readers and Writers for Atributes, instead of Classes.

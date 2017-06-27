@@ -4,16 +4,20 @@ import com.github.tinosteinort.flda.accessor.reader.AttributeReader;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthString;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthStringAttribute;
 
-public class StringAttributeReader
-        implements AttributeReader<FixedLengthString, String, FixedLengthStringAttribute<String>> {
+public class EnumAttributeReader<T extends Enum<T>> implements AttributeReader<FixedLengthString, T, FixedLengthStringAttribute<T>> {
 
     private final StringReader reader = new StringReader();
+    private final Class<T> enumClass;
 
-    @Override public String read(final FixedLengthString data, final FixedLengthStringAttribute<String> attribute) {
+    public EnumAttributeReader(final Class<T> enumClass) {
+        this.enumClass = enumClass;
+    }
+
+    @Override public T read(final FixedLengthString data, final FixedLengthStringAttribute<T> attribute) {
         final String value = reader.read(data, attribute);
         if (value.equals("")) {
             return null;
         }
-        return value;
+        return Enum.valueOf(enumClass, value);
     }
 }
