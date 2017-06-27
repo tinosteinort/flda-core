@@ -5,6 +5,7 @@ import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthStri
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class EnumAttributeReaderTest {
 
@@ -15,6 +16,13 @@ public class EnumAttributeReaderTest {
         final FixedLengthStringAttribute<Colour> attribute = new FixedLengthStringAttribute<>(Colour.class, 0, 6);
 
         assertEquals(Colour.GREEN, reader.read(data, attribute));
+    }
+
+    @Test public void readNullValue() {
+        final FixedLengthString data = new FixedLengthString("      ");
+        final FixedLengthStringAttribute<Colour> attribute = new FixedLengthStringAttribute<>(Colour.class, 0, 6);
+
+        assertNull(reader.read(data, attribute));
     }
 
     @Test(expected = IllegalArgumentException.class)
