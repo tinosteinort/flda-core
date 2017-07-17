@@ -1,19 +1,26 @@
-FLDA - Fixed Length Data Accessor
-=================================
+# FLDA - Fixed Length Data Accessor
+FLDA provides mapping from either fixed-length or character-separated attributes to Java objects. The two-way mapping supports reading data as well as writing data. 
 
-Library to support easy access to reading and writing data with fixed length.
+## Supported data formats
+### Fixed-length attributes
+Fixed-length data consists of attributes that each have a specific position and length. Hence, every n-th attribute begins at the same character-index. In this example, every name of an item begins at character-index 10 and every amount of items begins at character-index 16:  
+```
+Fruit    Cherry30
+Fruit    Apple  5
+VegetablePotato23
+```
 
-# Introduction
-FLDA eases the access of fixed length data. Fixed
- length data consists of data records that each have the same structure. 
- Every attribute has a specific position and length, or just an index
- within the data set. Therefore it does not matter if the record is 
- stored line by line in a file or if there are many records in a binary 
- file.
+### Example for Character-separated attributes
+Character-separated data consists of attributes that are separated by a character. In this example, the attributes are semicolon-separated: 
+```
+Fruit;Cherry;30
+Fruit;Apple;5
+Vegetable;Potato;23
+```
 
-# Maven
+## Maven
 
-Include the following artifact:
+To use FLDA, include the following artifact:
 ```xml
 <dependency>
     <groupId>com.github.tinosteinort</groupId>
@@ -22,13 +29,11 @@ Include the following artifact:
 </dependency>
 ```
 
-# Example
-FLDA supports a build-in `FixedLengthString`. E.g. it can be 
- used if the data is stored line by line in a file. See
- [FixedLengthStringInterfaceTest](src/test/java/com/github/tinosteinort/flda/interfaces/fixedlengthstring/fullexample/FixedLengthStringInterfaceTest.java)
- for a full working example.
+## Examples
+### Fixed-length attributes
+FLDA supports a build-in `FixedLengthString`. E.g. it can be used if the data is stored line by line in a file. See [FixedLengthStringInterfaceTest](src/test/java/com/github/tinosteinort/flda/interfaces/fixedlengthstring/fullexample/FixedLengthStringInterfaceTest.java) for a full working example.
 
-## Example File and Description
+### Example File and Description
 The example file contains a list of fruits and vegetables, each having the attributes 
 type, name and amount. One record has 17 characters.
  
@@ -55,7 +60,7 @@ class DataDescriptor {
 }
 ```
 
-## Accessing the Data Record
+### Accessing the Data Record
 Before the data can be accessed, we need a configuration of how a
  type or attribute has to be handled.
 ```java
@@ -95,7 +100,10 @@ readAccessor.write(DataDescriptor.NAME, "Carrot");
 readAccessor.write(DataDescriptor.AMOUNT, 5);
 ```
 
-# Conclusion
+### Example for Character-separated attributes
+TODO
+
+## Conclusion
 FLDA can be used for many more data types than `FixedLenghtString`.
  With a new implementation of attributes, readers and writers, it will
  also work e.g. for `byte[]`.
