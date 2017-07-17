@@ -6,13 +6,13 @@ import com.github.tinosteinort.flda.interfaces.stringlist.StringListAttribute;
 
 import java.util.List;
 
-public class IntegerAttributeReader implements AttributeReader<List<String>, Integer, StringListAttribute<Integer>> {
+public class LongAttributeReader implements AttributeReader<List<String>, Long, StringListAttribute<Long>> {
 
-    @Override public Integer read(final List<String> record, final StringListAttribute<Integer> attribute) {
+    @Override public Long read(final List<String> record, final StringListAttribute<Long> attribute) {
         final String value = record.get(attribute.getIndex());
         if (value == null || "".equals(value.trim())) {
             return null;
         }
-        return Integer.valueOf(value);
+        return Long.valueOf(value);
     }
 }
