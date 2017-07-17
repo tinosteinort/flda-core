@@ -1,21 +1,19 @@
 FLDA - Fixed Length Data Accessor
 =================================
 
-Library to support easy Access to read and write Fixed Length Data.
-
+Library to support easy access to reading and writing data with fixed length.
 
 # Introduction
-This Library should ease the Access of Fixed Length Data. Fixed
- Length Data is when a Datarecord has a fix Structure. Every Attribute
- has a specific Position and Length, or just an Index. Therefore it
- does not matter if the Record is stored Line by Line in a File
- or if there are many Records in a binary File. If the Record has
- a fix Length, and so the Attributes, this Library should help to
- Access the Data of the Record.
+FLDA eases the access of fixed length data. Fixed
+ length data consists of data records that each have the same structure. 
+ Every attribute has a specific position and length, or just an index
+ within the data set. Therefore it does not matter if the record is 
+ stored line by line in a file or if there are many records in a binary 
+ file.
 
 # Maven
 
-Include the following Artifact to use the `BeanRepository`:
+Include the following artifact:
 ```xml
 <dependency>
     <groupId>com.github.tinosteinort</groupId>
@@ -25,25 +23,25 @@ Include the following Artifact to use the `BeanRepository`:
 ```
 
 # Example
-In Library supports a build in `FixedLengthString`. E.g. it can be 
- used if the Data is stored Line by Line in a File. See
+FLDA supports a build-in `FixedLengthString`. E.g. it can be 
+ used if the data is stored line by line in a file. See
  [FixedLengthStringInterfaceTest](src/test/java/com/github/tinosteinort/flda/interfaces/fixedlengthstring/fullexample/FixedLengthStringInterfaceTest.java)
- for a full working Example.
+ for a full working example.
 
 ## Example File and Description
-Our File contains a List of Fruits and Vegetables. The Attributes are:
- Type, Name and Amount. One Record has 17 Characters.
+The example file contains a list of fruits and vegetables, each having the attributes 
+type, name and amount. One record has 17 characters.
  
-Content of the `Data.txt`:
+Content of `Data.txt`:
 ```
 Fruit    Cherry30
 Fruit    Apple  5
 VegetablePotato23
 ```
 
-A Descriptor describes each Attribute which should be read or written.
- In Case of the `FixedLengthString`, an Attribute needs a Type, StartIndex
- and Length. With this Information, all Attributes can be accessed.
+A descriptor defines each attribute which should be read or written.
+ In case of the `FixedLengthString`, an attribute needs a type, startIndex
+ and length. With this information, all attributes can be accessed.
 ```java
 class DataDescriptor {
 
@@ -58,8 +56,8 @@ class DataDescriptor {
 ```
 
 ## Accessing the Data Record
-Before the Data can be accessed, we need a Configuration of how a
- Type or Attribute has to be handled.
+Before the data can be accessed, we need a configuration of how a
+ type or attribute has to be handled.
 ```java
 final AccessorConfig<FixedLengthString, FixedLengthStringAttribute<?>> config = new AccessorConfigBuilder<FixedLengthString, FixedLengthStringAttribute<?>>()
             .registerReader(String.class, new StringAttributeReader())
@@ -68,10 +66,10 @@ final AccessorConfig<FixedLengthString, FixedLengthStringAttribute<?>> config = 
             .registerWriter(DataDescriptor.AMOUNT, new IntegerAttributeWriter(StringFitter.Alignment.RIGHT, ' '))
             .build();
 ```
-It is also possible to register Readers and Writers for Atributes, instead of Classes.
- Because of this, Customization is possible.
+It is also possible to register readers and writers for attributes, instead of classes.
+ Because of this, customization is possible.
 
-Get the Content of the File in `FixedLengthString`s:
+Get the content of the File in `FixedLengthString`s:
 ```java
 List<FixedLengthString> data = 
         Files.readAllLines(Paths.get("Data.txt"))
@@ -80,7 +78,7 @@ List<FixedLengthString> data =
         .collect(Collectors.toList());
 ```
 
-Than, the FixedLengthStrings can be accessed e.g. with the `ReadAccessor`
+Then, the FixedLengthStrings can be accessed e.g. with the `ReadAccessor`
 ```java
 ReadAccessor<FixedLengthString, FixedLengthStringAttribute<?>> readAccessor = new ReadAccessor<>(config, data)
 final String type = readAccessor.read(DataDescriptor.TYPE);
@@ -88,7 +86,7 @@ final String name = readAccessor.read(DataDescriptor.NAME);
 final int amount = readAccessor.read(DataDescriptor.AMOUNT);
 ```
 
-The other way is to write:
+Writing to the file can be done using the `WriteAccessor`:
 ```java
 FixedLengthString data = new FixedLengthString(17, ' ');
 WriteAccessor<FixedLengthString, FixedLengthStringAttribute<?>> writeAccessor = new WriteAccessor<>(config, data)
@@ -98,6 +96,6 @@ readAccessor.write(DataDescriptor.AMOUNT, 5);
 ```
 
 # Conclusion
-This Library can be used for many more DataTypes than `FixedLenghtString`.
- With a new Implementation of Attributes and Readers and Writers, it will
- also work e.g. for `byte[]`. 
+FLDA can be used for many more data types than `FixedLenghtString`.
+ With a new implementation of attributes, readers and writers, it will
+ also work e.g. for `byte[]`.
