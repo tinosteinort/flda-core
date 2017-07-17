@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 // TODO Convert this class to "real" JUnit Test with same structure and naming as FixedLengthStringInterfaceTest.
-public class Example {
+public class StringListInterfaceTest {
 
     private final AccessorConfig<List<String>, StringListAttribute<?>> config =
             new AccessorConfigBuilder<List<String>, StringListAttribute<?>>()
@@ -30,7 +30,7 @@ public class Example {
                     .build();
 
     public static void main(String[] args) throws IOException {
-        new Example().run();
+        new StringListInterfaceTest().run();
     }
 
     private void run() throws IOException {

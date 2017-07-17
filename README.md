@@ -101,7 +101,7 @@ readAccessor.write(DataDescriptor.AMOUNT, 5);
 ```
 
 ### Example for Character-separated attributes
-TODO
+See [StringListInterfaceTest](src/test/java/com/github/tinosteinort/flda/interfaces/stringlist/fullexample/StringListInterfaceTest.java) for a full working example. 
 
 ## Conclusion
 FLDA can be used for many more data types than `FixedLenghtString`.
