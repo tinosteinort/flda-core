@@ -1,4 +1,7 @@
 # FLDA - Fixed Length Data Accessor
+
+[![Maven Status](https://maven-badges.herokuapp.com/maven-central/com.github.tinosteinort/flda/badge.svg?style=flat)](http://mvnrepository.com/artifact/com.github.tinosteinort/flda)
+
 FLDA provides mapping from either fixed-length or character-separated attributes to Java objects. The two-way mapping supports reading data as well as writing data. 
 
 ## Supported data formats
