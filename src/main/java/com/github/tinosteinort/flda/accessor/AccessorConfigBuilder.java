@@ -6,6 +6,7 @@ import com.github.tinosteinort.flda.accessor.writer.AttributeWriter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * This is the Registry for all Readers and Writers for a specific Tupel Type.
@@ -18,6 +19,7 @@ public class AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE extend
     private final Map<Class<?>, AttributeWriter<TUPEL_TYPE, ?, ? extends Attribute<?>>> writersByType = new HashMap<>();
     private final Map<ATTRIBUTE_DESCRIPTION_TYPE, AttributeReader<TUPEL_TYPE, ?, ? extends Attribute<?>>> readersByAttribute = new HashMap<>();
     private final Map<ATTRIBUTE_DESCRIPTION_TYPE, AttributeWriter<TUPEL_TYPE, ?, ? extends Attribute<?>>> writersByAttribute = new HashMap<>();
+    private Supplier<TUPEL_TYPE> recordFactory;
 
     /**
      * Creates a empty {@code AccessorConfigBuilder} without any registerd Readers and Writers.
@@ -88,11 +90,22 @@ public class AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE extend
     }
 
     /**
+     * Sets a Factory which can create a new Instance of a Record.
+     *
+     * @param recordFactory
+     * @return
+     */
+    public AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> withRecordFactory(final Supplier<TUPEL_TYPE> recordFactory) {
+        this.recordFactory = recordFactory;
+        return this;
+    }
+
+    /**
      * Creates a new {@link AccessorConfig} with the registered Reader and Writer.
      * @return The new created {@link AccessorConfig}.
      */
     public AccessorConfig<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> build() {
-        return new AccessorConfigImpl<>(readersByType, writersByType, readersByAttribute, writersByAttribute);
+        return new AccessorConfigImpl<>(readersByType, writersByType, readersByAttribute, writersByAttribute, recordFactory);
     }
 
     private class AccessorConfigImpl<TYPE, ATTR_DESC_TYPE extends Attribute<?>> implements AccessorConfig<TYPE, ATTR_DESC_TYPE> {
@@ -101,16 +114,19 @@ public class AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE extend
         private final Map<Class<?>, AttributeWriter<TYPE, ?, ? extends Attribute<?>>> writersByType = new HashMap<>();
         private final Map<ATTR_DESC_TYPE, AttributeReader<TYPE, ?, ? extends Attribute<?>>> readersByAttribute = new HashMap<>();
         private final Map<ATTR_DESC_TYPE, AttributeWriter<TYPE, ?, ? extends Attribute<?>>> writersByAttribute = new HashMap<>();
+        private final Supplier<TYPE> recordFactory;
 
         private AccessorConfigImpl(
                 final Map<Class<?>, AttributeReader<TYPE, ?, ? extends Attribute<?>>> readersByType,
                 final Map<Class<?>, AttributeWriter<TYPE, ?, ? extends Attribute<?>>> writersByType,
                 final Map<ATTR_DESC_TYPE, AttributeReader<TYPE, ?, ? extends Attribute<?>>> readersByAttribute,
-                final Map<ATTR_DESC_TYPE, AttributeWriter<TYPE, ?, ? extends Attribute<?>>> writersByAttribute) {
+                final Map<ATTR_DESC_TYPE, AttributeWriter<TYPE, ?, ? extends Attribute<?>>> writersByAttribute,
+                final Supplier<TYPE> recordFactory) {
             this.readersByType.putAll(readersByType);
             this.writersByType.putAll(writersByType);
             this.readersByAttribute.putAll(readersByAttribute);
             this.writersByAttribute.putAll(writersByAttribute);
+            this.recordFactory = recordFactory;
         }
 
         @Override public <ATTR_TYPE> AttributeReader<TYPE, ATTR_TYPE, ATTR_DESC_TYPE> readerFor(final ATTR_DESC_TYPE attribute) {
@@ -127,6 +143,13 @@ public class AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE extend
                 return (AttributeWriter<TYPE, ATTR_TYPE, ATTR_DESC_TYPE>) writersByType.get(attribute.getType());
             }
             return (AttributeWriter<TYPE, ATTR_TYPE, ATTR_DESC_TYPE>) writerByAttribute;
+        }
+
+        @Override public TYPE createNewRecord() {
+            if (recordFactory == null) {
+                throw new RuntimeException("Could not create record instance without RecordFactory");
+            }
+            return recordFactory.get();
         }
 
         public Map<Class<?>, AttributeReader<TYPE, ?, ? extends Attribute<?>>> readers() {

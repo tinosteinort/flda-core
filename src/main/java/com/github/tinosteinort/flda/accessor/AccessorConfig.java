@@ -4,6 +4,7 @@ import com.github.tinosteinort.flda.accessor.reader.AttributeReader;
 import com.github.tinosteinort.flda.accessor.writer.AttributeWriter;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * Configuration of the Writer and Reader of an Interface.
@@ -30,6 +31,17 @@ public interface AccessorConfig<TUPEL_TYPE, ATTR_DESC_TYPE extends Attribute<?>>
      * @return The Writer for the given Attribute.
      */
     <ATTR_TYPE> AttributeWriter<TUPEL_TYPE, ATTR_TYPE, ATTR_DESC_TYPE> writerFor(ATTR_DESC_TYPE attribute);
+
+    /**
+     * Creates a new Instance of a Record, which is usable by the
+     *  {@link com.github.tinosteinort.flda.accessor.reader.ReadAccessor}
+     *  and {@link com.github.tinosteinort.flda.accessor.writer.WriteAccessor}. To use this Method it is required
+     *  to register a Record Factory with {@link AccessorConfigBuilder#withRecordFactory(Supplier)}.
+     *
+     * @throws RuntimeException If no Record Factory is set
+     * @return A new Record Instance
+     */
+    TUPEL_TYPE createNewRecord();
 
     /**
      * @return All registered Readers.
