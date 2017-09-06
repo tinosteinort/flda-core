@@ -103,6 +103,39 @@ readAccessor.write(DataDescriptor.NAME, "Carrot");
 readAccessor.write(DataDescriptor.AMOUNT, 5);
 ```
 
+### Record Factory
+A record factory is used by `AccessorConfig.createNewRecord`. To use this
+ method it is required to register a record factory:
+```java
+private final AccessorConfig<FixedLengthString, FixedLengthStringAttribute<?>> config = new AccessorConfigBuilder<FixedLengthString, FixedLengthStringAttribute<?>>()
+            // ...
+            .withRecordFactory(new FixedLengthStringFactory(PersonDescriptor.LENGTH, ' '))
+            .build();
+```
+The advantage of using a record factory is, that the code to create a new
+ and empty record is in one place.
+ 
+There are different predefined record factories:
+* `FixedLengthString` => `FixedLengthStringFactory`
+* `StringList` => `StringListFactory`
+
+### Automatic Validation
+It is possible to validate the records automatically. Just register the 
+ desired validators:
+```java
+private final SizeValidator validator = new SizeValidator(InterfaceDescription.ATTRIBUTE_COUNT);
+
+private final AccessorConfig<List<String>, StringListAttribute<?>> config =
+        new AccessorConfigBuilder<List<String>, StringListAttribute<?>>()
+                // ...
+                .withReadValidator(validator)
+                .withWriteValidator(validator)
+                .build();
+```
+There are different predefined validators:
+* `FixedLengthString` => `LengthValidator`
+* `StringList` => `SizeValidator`
+
 ### Example for Character-separated attributes
 See [StringListInterfaceTest](src/test/java/com/github/tinosteinort/flda/interfaces/stringlist/fullexample/StringListInterfaceTest.java) for a full working example. 
 

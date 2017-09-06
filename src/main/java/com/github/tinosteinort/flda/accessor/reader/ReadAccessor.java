@@ -25,6 +25,7 @@ public class ReadAccessor<TUPEL_TYPE, ATTR_TYPE extends Attribute<?>> {
     public ReadAccessor(final AccessorConfig<TUPEL_TYPE, ATTR_TYPE> config, final TUPEL_TYPE data) {
         this.config = config;
         this.data = data;
+        this.config.validateForRead(data);
     }
 
     public <T, ATTR extends Attribute<T>> T read(final ATTR attribute) {

@@ -4,14 +4,15 @@ import com.github.tinosteinort.flda.accessor.AccessorConfig;
 import com.github.tinosteinort.flda.accessor.AccessorConfigBuilder;
 import com.github.tinosteinort.flda.accessor.reader.ReadAccessor;
 import com.github.tinosteinort.flda.accessor.writer.WriteAccessor;
+import com.github.tinosteinort.flda.interfaces.stringlist.SizeValidator;
 import com.github.tinosteinort.flda.interfaces.stringlist.StringListAttribute;
+import com.github.tinosteinort.flda.interfaces.stringlist.StringListFactory;
 import com.github.tinosteinort.flda.interfaces.stringlist.reader.EnumAttributeReader;
 import com.github.tinosteinort.flda.interfaces.stringlist.reader.IntegerAttributeReader;
 import com.github.tinosteinort.flda.interfaces.stringlist.reader.StringAttributeReader;
 import com.github.tinosteinort.flda.interfaces.stringlist.writer.EnumAttributeWriter;
 import com.github.tinosteinort.flda.interfaces.stringlist.writer.IntegerAttributeWriter;
 import com.github.tinosteinort.flda.interfaces.stringlist.writer.StringAttributeWriter;
-import com.github.tinosteinort.flda.interfaces.stringlist.StringListFactory;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -22,6 +23,8 @@ import static org.junit.Assert.assertEquals;
 
 public class StringListInterfaceTest {
 
+    private final SizeValidator validator = new SizeValidator(InterfaceDescription.ATTRIBUTE_COUNT);
+
     private final AccessorConfig<List<String>, StringListAttribute<?>> config =
             new AccessorConfigBuilder<List<String>, StringListAttribute<?>>()
                     .registerReader(String.class, new StringAttributeReader())
@@ -31,6 +34,8 @@ public class StringListInterfaceTest {
                     .registerWriter(Integer.class, new IntegerAttributeWriter())
                     .registerWriter(Type.class, new EnumAttributeWriter<>())
                     .withRecordFactory(new StringListFactory(InterfaceDescription.ATTRIBUTE_COUNT))
+                    .withReadValidator(validator)
+                    .withWriteValidator(validator)
                     .build();
 
     @Test public void readExample() {

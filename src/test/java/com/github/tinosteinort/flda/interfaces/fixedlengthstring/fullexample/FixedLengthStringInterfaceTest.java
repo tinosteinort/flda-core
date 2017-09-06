@@ -7,6 +7,7 @@ import com.github.tinosteinort.flda.accessor.writer.WriteAccessor;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthString;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthStringAttribute;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthStringFactory;
+import com.github.tinosteinort.flda.interfaces.fixedlengthstring.LengthValidator;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.reader.IntegerAttributeReader;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.reader.StringAttributeReader;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.writer.IntegerAttributeWriter;
@@ -19,12 +20,16 @@ import java.io.UnsupportedEncodingException;
 
 public class FixedLengthStringInterfaceTest {
 
+    private final LengthValidator validator = new LengthValidator(PersonDescriptor.LENGTH);
+
     private final AccessorConfig<FixedLengthString, FixedLengthStringAttribute<?>> config = new AccessorConfigBuilder<FixedLengthString, FixedLengthStringAttribute<?>>()
             .registerReader(String.class, new StringAttributeReader())
             .registerReader(Integer.class, new IntegerAttributeReader())
             .registerWriter(String.class, new StringAttributeWriter())
             .registerWriter(Integer.class, new IntegerAttributeWriter())
-            .withRecordFactory(new FixedLengthStringFactory(23, ' '))
+            .withRecordFactory(new FixedLengthStringFactory(PersonDescriptor.LENGTH, ' '))
+            .withReadValidator(validator)
+            .withWriteValidator(validator)
             .build();
 
     @Test public void testImport() throws UnsupportedEncodingException {

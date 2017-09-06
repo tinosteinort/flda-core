@@ -44,6 +44,20 @@ public interface AccessorConfig<TUPEL_TYPE, ATTR_DESC_TYPE extends Attribute<?>>
     TUPEL_TYPE createNewRecord();
 
     /**
+     * Execute the validation for a record when a {@link com.github.tinosteinort.flda.accessor.reader.ReadAccessor}
+     *  is created.
+     * @param tupel the record for which the validation should be executed.
+     */
+    void validateForRead(TUPEL_TYPE tupel);
+
+    /**
+     * Execute the validation for a record when a {@link com.github.tinosteinort.flda.accessor.writer.WriteAccessor}
+     *  is created.
+     * @param tupel the record for which the validation should be executed.
+     */
+    void validateForWrite(TUPEL_TYPE tupel);
+
+    /**
      * @return All registered Readers.
      */
     Map<Class<?>, AttributeReader<TUPEL_TYPE, ?, ? extends Attribute<?>>> readers();
@@ -54,4 +68,7 @@ public interface AccessorConfig<TUPEL_TYPE, ATTR_DESC_TYPE extends Attribute<?>>
     Map<Class<?>, AttributeWriter<TUPEL_TYPE, ?, ? extends Attribute<?>>> writers();
 
     Supplier<TUPEL_TYPE> recordFactory();
+
+    RecordValidator<TUPEL_TYPE> readValidator();
+    RecordValidator<TUPEL_TYPE> writeValidator();
 }

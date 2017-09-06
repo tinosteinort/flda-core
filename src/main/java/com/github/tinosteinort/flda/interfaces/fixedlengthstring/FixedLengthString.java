@@ -26,6 +26,10 @@ public class FixedLengthString {
         System.arraycopy(newValue, 0, this.value, position, newValue.length);
     }
 
+    public int length() {
+        return value.length;
+    }
+
     public String getString() {
         return String.valueOf(value);
     }

@@ -25,6 +25,7 @@ public class WriteAccessor<TUPEL_TYPE, ATTR_TYPE extends Attribute<?>> {
     public WriteAccessor(final AccessorConfig<TUPEL_TYPE, ATTR_TYPE> config, final TUPEL_TYPE data) {
         this.config = config;
         this.data = data;
+        this.config.validateForWrite(data);
     }
 
     public <T, ATTR extends Attribute<T>> void write(final ATTR attribute, final T value) {
