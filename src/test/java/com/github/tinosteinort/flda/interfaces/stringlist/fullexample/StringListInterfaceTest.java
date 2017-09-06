@@ -11,25 +11,16 @@ import com.github.tinosteinort.flda.interfaces.stringlist.reader.StringAttribute
 import com.github.tinosteinort.flda.interfaces.stringlist.writer.EnumAttributeWriter;
 import com.github.tinosteinort.flda.interfaces.stringlist.writer.IntegerAttributeWriter;
 import com.github.tinosteinort.flda.interfaces.stringlist.writer.StringAttributeWriter;
+import com.github.tinosteinort.flda.interfaces.stringlist.StringListFactory;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 
 public class StringListInterfaceTest {
-
-    private final Supplier<List<String>> recordFactory = () -> {
-        final List<String> record = new ArrayList<>(InterfaceDescription.ATTRIBUTE_COUNT);
-        for (int i = 0; i < InterfaceDescription.ATTRIBUTE_COUNT; i++) {
-            record.add(null);
-        }
-        return record;
-    };
 
     private final AccessorConfig<List<String>, StringListAttribute<?>> config =
             new AccessorConfigBuilder<List<String>, StringListAttribute<?>>()
@@ -39,7 +30,7 @@ public class StringListInterfaceTest {
                     .registerWriter(String.class, new StringAttributeWriter())
                     .registerWriter(Integer.class, new IntegerAttributeWriter())
                     .registerWriter(Type.class, new EnumAttributeWriter<>())
-                    .withRecordFactory(recordFactory)
+                    .withRecordFactory(new StringListFactory(InterfaceDescription.ATTRIBUTE_COUNT))
                     .build();
 
     @Test public void readExample() {

@@ -6,6 +6,7 @@ import com.github.tinosteinort.flda.accessor.reader.ReadAccessor;
 import com.github.tinosteinort.flda.accessor.writer.WriteAccessor;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthString;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthStringAttribute;
+import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthStringFactory;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.reader.IntegerAttributeReader;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.reader.StringAttributeReader;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.writer.IntegerAttributeWriter;
@@ -23,6 +24,7 @@ public class FixedLengthStringInterfaceTest {
             .registerReader(Integer.class, new IntegerAttributeReader())
             .registerWriter(String.class, new StringAttributeWriter())
             .registerWriter(Integer.class, new IntegerAttributeWriter())
+            .withRecordFactory(new FixedLengthStringFactory(23, ' '))
             .build();
 
     @Test public void testImport() throws UnsupportedEncodingException {
@@ -63,7 +65,7 @@ public class FixedLengthStringInterfaceTest {
 
     public FixedLengthString doExport(final Person person) {
 
-        final FixedLengthString row = new FixedLengthString(23, ' ');
+        final FixedLengthString row = config.createNewRecord();
 
         final PersonFixedLengthStringWriter writer = new PersonFixedLengthStringWriter(config, row);
 
@@ -108,7 +110,7 @@ public class FixedLengthStringInterfaceTest {
         person.setLastname("Duck");
         person.setAge(7); // Age should be right aligned, custom AttributeWriter required for writing
 
-        final FixedLengthString row = new FixedLengthString(23, ' ');
+        final FixedLengthString row = localConfig.createNewRecord();
 
         final PersonFixedLengthStringWriter writer = new PersonFixedLengthStringWriter(localConfig, row);
 

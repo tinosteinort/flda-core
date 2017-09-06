@@ -52,4 +52,6 @@ public interface AccessorConfig<TUPEL_TYPE, ATTR_DESC_TYPE extends Attribute<?>>
      * @return All registered Writers.
      */
     Map<Class<?>, AttributeWriter<TUPEL_TYPE, ?, ? extends Attribute<?>>> writers();
+
+    Supplier<TUPEL_TYPE> recordFactory();
 }

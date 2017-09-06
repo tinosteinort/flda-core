@@ -35,6 +35,7 @@ public class AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE extend
     public AccessorConfigBuilder(final AccessorConfig<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> baseConfig) {
         readersByType.putAll(baseConfig.readers());
         writersByType.putAll(baseConfig.writers());
+        this.recordFactory = baseConfig.recordFactory();
     }
 
     /**
@@ -152,12 +153,16 @@ public class AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE extend
             return recordFactory.get();
         }
 
-        public Map<Class<?>, AttributeReader<TYPE, ?, ? extends Attribute<?>>> readers() {
+        @Override public Map<Class<?>, AttributeReader<TYPE, ?, ? extends Attribute<?>>> readers() {
             return Collections.unmodifiableMap(readersByType);
         }
 
-        public Map<Class<?>, AttributeWriter<TYPE, ?, ? extends Attribute<?>>> writers() {
+        @Override public Map<Class<?>, AttributeWriter<TYPE, ?, ? extends Attribute<?>>> writers() {
             return Collections.unmodifiableMap(writersByType);
+        }
+
+        @Override public Supplier<TYPE> recordFactory() {
+            return recordFactory;
         }
     }
 }
