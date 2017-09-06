@@ -28,7 +28,7 @@ To use FLDA, include the following artifact:
 <dependency>
     <groupId>com.github.tinosteinort</groupId>
     <artifactId>flda</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 
