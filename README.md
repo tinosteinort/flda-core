@@ -109,7 +109,7 @@ A record factory is used by `AccessorConfig.createNewRecord`. To use this
 ```java
 private final AccessorConfig<FixedLengthString, FixedLengthStringAttribute<?>> config = new AccessorConfigBuilder<FixedLengthString, FixedLengthStringAttribute<?>>()
             // ...
-            .withRecordFactory(new FixedLengthStringFactory(PersonDescriptor.LENGTH, ' '))
+            .withRecordFactory(new FixedLengthStringFactory(23, ' '))
             .build();
 ```
 The advantage of using a record factory is, that the code to create a new
