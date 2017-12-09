@@ -5,21 +5,16 @@ import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthStri
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthStringAttribute;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.StringFitter;
 
-public class EnumAttributeWriter<T extends Enum<T>> implements AttributeWriter<FixedLengthString, T, FixedLengthStringAttribute<T>> {
+public class EnumAttributeWriter<T extends Enum<T>>
+        implements AttributeWriter<FixedLengthString, T, FixedLengthStringAttribute<T>> {
 
-    private final StringFitter stringFitter;
+    @Override public void write(final FixedLengthString data, final FixedLengthStringAttribute<T> attribute,
+                                final T value) {
 
-    public EnumAttributeWriter() {
-        this.stringFitter = new StringFitter(' ');
-    }
+        final String name = (value == null ? null : value.name());
+        final String newValue = StringFitter.fit(name, attribute.getAlignment(), attribute.getLength(),
+                attribute.getFiller());
 
-    public EnumAttributeWriter(final char filler) {
-        this.stringFitter = new StringFitter(filler);
-    }
-
-    @Override public void write(final FixedLengthString data, final FixedLengthStringAttribute<T> attribute, final T value) {
-
-        final String enumValue = value == null ? null : value.name();
-        data.update(attribute.getIndex(), stringFitter.fit(enumValue, attribute.getAlignment(), attribute.getLength()));
+        data.update(attribute.getIndex(), newValue);
     }
 }

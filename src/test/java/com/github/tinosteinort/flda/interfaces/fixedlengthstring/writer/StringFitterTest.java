@@ -8,23 +8,31 @@ import static org.junit.Assert.assertEquals;
 
 public class StringFitterTest {
 
-    private final StringFitter fitter = new StringFitter(' ');
-
-    @Test public void fitLeftFillUp() {
-        assertEquals("Abc  ", fitter.fit("Abc", Alignment.LEFT, 5));
-    }
-    @Test public void fitLeftCut() {
-        assertEquals("AbcDe", fitter.fit("AbcDeF", Alignment.LEFT, 5));
+    @Test public void fitFillUpRight() {
+        assertEquals("Abc  ", StringFitter.fit("Abc", Alignment.LEFT, 5, ' '));
     }
 
-    @Test public void fitRightFillUp() {
-        assertEquals("  deF", fitter.fit("deF", Alignment.RIGHT, 5));
+    @Test public void fitFillUpRightWithOtherFiller() {
+        assertEquals("Abc__", StringFitter.fit("Abc", Alignment.LEFT, 5, '_'));
     }
-    @Test public void fitRightCut() {
-        assertEquals("2345", fitter.fit("12345", Alignment.RIGHT, 4));
+
+    @Test public void fitCutRight() {
+        assertEquals("AbcDe", StringFitter.fit("AbcDeF", Alignment.LEFT, 5, ' '));
+    }
+
+    @Test public void fitFillUpLeft() {
+        assertEquals("  deF", StringFitter.fit("deF", Alignment.RIGHT, 5, ' '));
+    }
+
+    @Test public void fitFillUpLeftWithOtherFiller() {
+        assertEquals("__deF", StringFitter.fit("deF", Alignment.RIGHT, 5, '_'));
+    }
+
+    @Test public void fitCutLeft() {
+        assertEquals("2345", StringFitter.fit("12345", Alignment.RIGHT, 4, ' '));
     }
 
     @Test public void fitFillUpNull() {
-        assertEquals("   ", fitter.fit(null, Alignment.LEFT, 3));
+        assertEquals("   ", StringFitter.fit(null, Alignment.LEFT, 3, ' '));
     }
 }

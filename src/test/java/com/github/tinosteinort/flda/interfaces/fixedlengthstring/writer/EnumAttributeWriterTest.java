@@ -9,27 +9,26 @@ import static org.junit.Assert.assertEquals;
 
 public class EnumAttributeWriterTest {
 
-    private final EnumAttributeWriter<Colour> leftWriter = new EnumAttributeWriter<>();
-    private final EnumAttributeWriter<Colour> rightWriter = new EnumAttributeWriter<>(' ');
+    private final EnumAttributeWriter<Colour> enumWriter = new EnumAttributeWriter<>();
 
     @Test public void writeValue() {
         final FixedLengthString data = new FixedLengthString(7, ' ');
         final FixedLengthStringAttribute<Colour> attribute = new FixedLengthStringAttribute<>(Colour.class, 0, 7, Alignment.LEFT);
-        leftWriter.write(data, attribute, Colour.RED);
+        enumWriter.write(data, attribute, Colour.RED);
         assertEquals("RED    ", data.toString());
     }
 
     @Test public void writeNull() {
         final FixedLengthString data = new FixedLengthString(7, ' ');
         final FixedLengthStringAttribute<Colour> attribute = new FixedLengthStringAttribute<>(Colour.class, 0, 7, Alignment.LEFT);
-        leftWriter.write(data, attribute, null);
+        enumWriter.write(data, attribute, null);
         assertEquals("       ", data.toString());
     }
 
     @Test public void writeValueRight() {
         final FixedLengthString data = new FixedLengthString(7, ' ');
         final FixedLengthStringAttribute<Colour> attribute = new FixedLengthStringAttribute<>(Colour.class, 0, 7, Alignment.RIGHT);
-        rightWriter.write(data, attribute, Colour.BLUE);
+        enumWriter.write(data, attribute, Colour.BLUE);
         assertEquals("   BLUE", data.toString());
     }
 }
@@ -37,6 +36,5 @@ public class EnumAttributeWriterTest {
 enum Colour {
 
     RED,
-    GREEN,
-    BLUE;
+    BLUE
 }

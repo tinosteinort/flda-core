@@ -4,13 +4,7 @@ import java.util.Arrays;
 
 public class StringFitter {
 
-    private final char filler;
-
-    public StringFitter(final char filler) {
-        this.filler = filler;
-    }
-
-    public String fit(final String value, final Alignment alignment, final int length) {
+    public static String fit(final String value, final Alignment alignment, final int length, final char filler) {
         if (value == null) {
             final char[] data = new char[length];
             Arrays.fill(data, filler);

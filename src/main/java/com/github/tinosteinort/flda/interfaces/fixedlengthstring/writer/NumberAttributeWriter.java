@@ -8,18 +8,13 @@ import com.github.tinosteinort.flda.interfaces.fixedlengthstring.StringFitter;
 public abstract class NumberAttributeWriter<T extends Number>
         implements AttributeWriter<FixedLengthString, T, FixedLengthStringAttribute<T>> {
 
-    private final StringFitter stringFitter;
+    @Override public void write(final FixedLengthString data, final FixedLengthStringAttribute<T> attribute,
+                                final T value) {
 
-    public NumberAttributeWriter() {
-        this.stringFitter = new StringFitter(' ');
-    }
+        final String newValue = StringFitter.fit(convertToString(value), attribute.getAlignment(),
+                attribute.getLength(), attribute.getFiller());
 
-    public NumberAttributeWriter(final char filler) {
-        this.stringFitter = new StringFitter(filler);
-    }
-
-    @Override public void write(final FixedLengthString data, final FixedLengthStringAttribute<T> attribute, final T value) {
-        data.update(attribute.getIndex(), stringFitter.fit(convertToString(value), attribute.getAlignment(), attribute.getLength()));
+        data.update(attribute.getIndex(), newValue);
     }
 
     protected String convertToString(final T value) {
