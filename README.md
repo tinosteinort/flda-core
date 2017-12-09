@@ -147,6 +147,8 @@ FLDA can be used for many more data types than `FixedLenghtString`.
 
 # Change History
 
+#### Features of version ?.?.?
+* `FixedLenghtString` implements `CharSequence`
 #### Migration to version ?.?.?
 * Move `StringFitter` from
     `com.github.tinosteinort.flda.interfaces.fixedlengthstring.writer`
@@ -156,3 +158,5 @@ FLDA can be used for many more data types than `FixedLenghtString`.
  `com.github.tinosteinort.flda.interfaces.fixedlengthstring.Alignment`
 * Remove `Alignment` Class from FixedLengthString Writer Classes into
  `com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthStringAttribute`
+* Method `FixedLengthString#getString()` replaced by `FixedLengthString#toString()`
+    * Output of old `FixedLengthString#toString()` Method is not supported anymore

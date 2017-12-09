@@ -16,13 +16,13 @@ public class BigIntegerAttributeWriterTest {
         final FixedLengthString data = new FixedLengthString(48, ' ');
         final FixedLengthStringAttribute<BigInteger> attribute = new FixedLengthStringAttribute<>(BigInteger.class, 0, 48);
         writer.write(data, attribute, new BigInteger("999999999999999999999999999999999999999999999999"));
-        assertEquals("999999999999999999999999999999999999999999999999", data.getString());
+        assertEquals("999999999999999999999999999999999999999999999999", data.toString());
     }
 
     @Test public void writeNull() {
         final FixedLengthString data = new FixedLengthString(10, ' ');
         final FixedLengthStringAttribute<BigInteger> attribute = new FixedLengthStringAttribute<>(BigInteger.class, 0, 10);
         writer.write(data, attribute, null);
-        assertEquals("          ", data.getString());
+        assertEquals("          ", data.toString());
     }
 }

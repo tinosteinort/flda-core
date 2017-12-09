@@ -16,21 +16,21 @@ public class EnumAttributeWriterTest {
         final FixedLengthString data = new FixedLengthString(7, ' ');
         final FixedLengthStringAttribute<Colour> attribute = new FixedLengthStringAttribute<>(Colour.class, 0, 7, Alignment.LEFT);
         leftWriter.write(data, attribute, Colour.RED);
-        assertEquals("RED    ", data.getString());
+        assertEquals("RED    ", data.toString());
     }
 
     @Test public void writeNull() {
         final FixedLengthString data = new FixedLengthString(7, ' ');
         final FixedLengthStringAttribute<Colour> attribute = new FixedLengthStringAttribute<>(Colour.class, 0, 7, Alignment.LEFT);
         leftWriter.write(data, attribute, null);
-        assertEquals("       ", data.getString());
+        assertEquals("       ", data.toString());
     }
 
     @Test public void writeValueRight() {
         final FixedLengthString data = new FixedLengthString(7, ' ');
         final FixedLengthStringAttribute<Colour> attribute = new FixedLengthStringAttribute<>(Colour.class, 0, 7, Alignment.RIGHT);
         rightWriter.write(data, attribute, Colour.BLUE);
-        assertEquals("   BLUE", data.getString());
+        assertEquals("   BLUE", data.toString());
     }
 }
 

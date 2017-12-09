@@ -17,13 +17,13 @@ public class FixedLengthStringTest {
     @Test public void update() {
         final FixedLengthString data = new FixedLengthString(5, ' ');
         data.update(0, "-----");
-        assertEquals("-----", data.getString());
+        assertEquals("-----", data.toString());
     }
 
     @Test public void updateMiddle() {
         final FixedLengthString data = new FixedLengthString(5, ' ');
         data.update(1, "--");
-        assertEquals(" --  ", data.getString());
+        assertEquals(" --  ", data.toString());
     }
 
     @Test(expected = IllegalArgumentException.class)

@@ -14,20 +14,20 @@ public class ByteAttributeWriterTest {
         final FixedLengthString data = new FixedLengthString(4, ' ');
         final FixedLengthStringAttribute<Byte> attribute = new FixedLengthStringAttribute<>(Byte.class, 0, 4);
         writer.write(data, attribute, (byte) -128);
-        assertEquals("-128", data.getString());
+        assertEquals("-128", data.toString());
     }
 
     @Test public void writeMax() {
         final FixedLengthString data = new FixedLengthString(3, ' ');
         final FixedLengthStringAttribute<Byte> attribute = new FixedLengthStringAttribute<>(Byte.class, 0, 3);
         writer.write(data, attribute, (byte) 127);
-        assertEquals("127", data.getString());
+        assertEquals("127", data.toString());
     }
 
     @Test public void writeNull() {
         final FixedLengthString data = new FixedLengthString(3, ' ');
         final FixedLengthStringAttribute<Byte> attribute = new FixedLengthStringAttribute<>(Byte.class, 0, 3);
         writer.write(data, attribute, null);
-        assertEquals("   ", data.getString());
+        assertEquals("   ", data.toString());
     }
 }

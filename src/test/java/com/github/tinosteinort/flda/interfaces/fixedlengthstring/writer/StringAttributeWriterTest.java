@@ -17,24 +17,24 @@ public class StringAttributeWriterTest {
     @Test public void writeOne() {
         final FixedLengthString data = new FixedLengthString("          ");
         writer.write(data, STRING_ONE, "123");
-        assertEquals("123       ", data.getString());
+        assertEquals("123       ", data.toString());
     }
 
     @Test public void writeTwo() {
         final FixedLengthString data = new FixedLengthString("          ");
         writer.write(data, STRING_TWO, "-#-");
-        assertEquals("   -#-    ", data.getString());
+        assertEquals("   -#-    ", data.toString());
     }
 
     @Test public void writeThree() {
         final FixedLengthString data = new FixedLengthString("          ");
         writer.write(data, STRING_THREE, "ABCd");
-        assertEquals("      ABCd", data.getString());
+        assertEquals("      ABCd", data.toString());
     }
 
     @Test public void writeNull() {
         final FixedLengthString data = new FixedLengthString("          ");
         writer.write(data, STRING_ONE, null);
-        assertEquals("          ", data.getString());
+        assertEquals("          ", data.toString());
     }
 }

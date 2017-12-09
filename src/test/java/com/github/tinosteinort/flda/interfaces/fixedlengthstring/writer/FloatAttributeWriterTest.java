@@ -14,27 +14,27 @@ public class FloatAttributeWriterTest {
         final FixedLengthString data = new FixedLengthString(7, ' ');
         final FixedLengthStringAttribute<Float> attribute = new FixedLengthStringAttribute<>(Float.class, 0, 7);
         writer.write(data, attribute, 0x0.000002P-126f);
-        assertEquals("1.4E-45", data.getString());
+        assertEquals("1.4E-45", data.toString());
     }
 
     @Test public void writeMinNormal() {
         final FixedLengthString data = new FixedLengthString(14, ' ');
         final FixedLengthStringAttribute<Float> attribute = new FixedLengthStringAttribute<>(Float.class, 0, 14);
         writer.write(data, attribute, 0x1.0p-126f);
-        assertEquals("1.17549435E-38", data.getString());
+        assertEquals("1.17549435E-38", data.toString());
     }
 
     @Test public void writeMax() {
         final FixedLengthString data = new FixedLengthString(12, ' ');
         final FixedLengthStringAttribute<Float> attribute = new FixedLengthStringAttribute<>(Float.class, 0, 12);
         writer.write(data, attribute, 0x1.fffffeP+127f);
-        assertEquals("3.4028235E38", data.getString());
+        assertEquals("3.4028235E38", data.toString());
     }
 
     @Test public void writeNull() {
         final FixedLengthString data = new FixedLengthString(14, ' ');
         final FixedLengthStringAttribute<Float> attribute = new FixedLengthStringAttribute<>(Float.class, 0, 14);
         writer.write(data, attribute, null);
-        assertEquals("              ", data.getString());
+        assertEquals("              ", data.toString());
     }
 }

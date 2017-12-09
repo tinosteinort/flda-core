@@ -14,20 +14,20 @@ public class IntegerAttributeWriterTest {
         final FixedLengthString data = new FixedLengthString(11, ' ');
         final FixedLengthStringAttribute<Integer> attribute = new FixedLengthStringAttribute<>(Integer.class, 0, 11);
         writer.write(data, attribute, -2147483648);
-        assertEquals("-2147483648", data.getString());
+        assertEquals("-2147483648", data.toString());
     }
 
     @Test public void writeMax() {
         final FixedLengthString data = new FixedLengthString(10, ' ');
         final FixedLengthStringAttribute<Integer> attribute = new FixedLengthStringAttribute<>(Integer.class, 0, 10);
         writer.write(data, attribute, 2147483647);
-        assertEquals("2147483647", data.getString());
+        assertEquals("2147483647", data.toString());
     }
 
     @Test public void writeNull() {
         final FixedLengthString data = new FixedLengthString(10, ' ');
         final FixedLengthStringAttribute<Integer> attribute = new FixedLengthStringAttribute<>(Integer.class, 0, 10);
         writer.write(data, attribute, null);
-        assertEquals("          ", data.getString());
+        assertEquals("          ", data.toString());
     }
 }

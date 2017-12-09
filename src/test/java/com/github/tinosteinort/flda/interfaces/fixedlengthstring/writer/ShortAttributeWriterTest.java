@@ -14,20 +14,20 @@ public class ShortAttributeWriterTest {
         final FixedLengthString data = new FixedLengthString(6, ' ');
         final FixedLengthStringAttribute<Short> attribute = new FixedLengthStringAttribute<>(Short.class, 0, 6);
         writer.write(data, attribute, (short) -32768);
-        assertEquals("-32768", data.getString());
+        assertEquals("-32768", data.toString());
     }
 
     @Test public void writeMax() {
         final FixedLengthString data = new FixedLengthString(5, ' ');
         final FixedLengthStringAttribute<Short> attribute = new FixedLengthStringAttribute<>(Short.class, 0, 5);
         writer.write(data, attribute, (short) 32767);
-        assertEquals("32767", data.getString());
+        assertEquals("32767", data.toString());
     }
 
     @Test public void writeNull() {
         final FixedLengthString data = new FixedLengthString(5, ' ');
         final FixedLengthStringAttribute<Short> attribute = new FixedLengthStringAttribute<>(Short.class, 0, 5);
         writer.write(data, attribute, null);
-        assertEquals("     ", data.getString());
+        assertEquals("     ", data.toString());
     }
 }

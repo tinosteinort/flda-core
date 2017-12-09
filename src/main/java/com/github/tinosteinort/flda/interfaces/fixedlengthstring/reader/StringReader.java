@@ -6,7 +6,7 @@ import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthStri
 public class StringReader {
 
     public String read(final FixedLengthString data, final FixedLengthStringAttribute<?> attribute) {
-        return data.getString().substring(
+        return data.substring(
                     attribute.getIndex(),
                     attribute.getIndex() + attribute.getLength())
                 .trim();
