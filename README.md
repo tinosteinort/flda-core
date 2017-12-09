@@ -155,6 +155,7 @@ FLDA can be used for many more data types than `FixedLenghtString`.
     `com.github.tinosteinort.flda.interfaces.fixedlengthstring.writer`
     to
     `com.github.tinosteinort.flda.interfaces.fixedlengthstring`
+* `StringFitter` is renamed to `StringUtils`
 * Extract `StringFitter.Alignment` into own Class: 
  `com.github.tinosteinort.flda.interfaces.fixedlengthstring.Alignment`
 * Remove `Alignment` Class from FixedLengthString Writer Classes into
@@ -163,3 +164,4 @@ FLDA can be used for many more data types than `FixedLenghtString`.
  `com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthStringAttribute`
 * Method `FixedLengthString#getString()` replaced by `FixedLengthString#toString()`
     * Output of old `FixedLengthString#toString()` Method is not supported anymore
+* Class `StringReader` is replaced by Method `StringUtils#readAndTrim()`

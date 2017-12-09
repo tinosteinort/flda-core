@@ -1,6 +1,7 @@
 package com.github.tinosteinort.flda.interfaces.fixedlengthstring.writer;
 
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.Alignment;
+import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthString;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.StringUtils;
 import org.junit.Test;
 
@@ -34,5 +35,40 @@ public class StringUtilsTest {
 
     @Test public void fitFillUpNull() {
         assertEquals("   ", StringUtils.fit(null, Alignment.LEFT, 3, ' '));
+    }
+
+    @Test public void readStart() {
+        final FixedLengthString data = new FixedLengthString("123   AbCd");
+        assertEquals("123", StringUtils.readAndTrim(data, 0, 3, ' '));
+    }
+
+    @Test public void readMiddle() {
+        final FixedLengthString data = new FixedLengthString("123   AbCd");
+        assertEquals("", StringUtils.readAndTrim(data, 3, 3, ' '));
+    }
+
+    @Test public void readEnd() {
+        final FixedLengthString data = new FixedLengthString("123   AbCd");
+        assertEquals("AbCd", StringUtils.readAndTrim(data, 6, 4, ' '));
+    }
+
+    @Test public void readAndTrimSpaceRight() {
+        final FixedLengthString data = new FixedLengthString("12345  ");
+        assertEquals("12345", StringUtils.readAndTrim(data, 0, 7, ' '));
+    }
+
+    @Test public void readAndTrimSpaceLeft() {
+        final FixedLengthString data = new FixedLengthString("  12345");
+        assertEquals("12345", StringUtils.readAndTrim(data, 0, 7, ' '));
+    }
+
+    @Test public void readAndTrimHashRight() {
+        final FixedLengthString data = new FixedLengthString("12345##");
+        assertEquals("12345", StringUtils.readAndTrim(data, 0, 7, '#'));
+    }
+
+    @Test public void readAndTrimHashLeft() {
+        final FixedLengthString data = new FixedLengthString("##12345");
+        assertEquals("12345", StringUtils.readAndTrim(data, 0, 7, '#'));
     }
 }

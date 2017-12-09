@@ -27,4 +27,12 @@ public class StringUtils {
             }
         }
     }
+
+    public static String readAndTrim(final FixedLengthString data, final int index, final int length,
+                                     final char filler) {
+
+        final String value = data.substring(index, index + length);
+        // TODO trim filler char, not only whitespaces
+        return value.trim();
+    }
 }
