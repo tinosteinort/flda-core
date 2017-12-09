@@ -5,8 +5,8 @@ public class FloatAttributeWriter extends NumberAttributeWriter<Float> {
     public FloatAttributeWriter() {
     }
 
-    public FloatAttributeWriter(final StringFitter.Alignment alignment, final char filler) {
-        super(alignment, filler);
+    public FloatAttributeWriter(final char filler) {
+        super(filler);
     }
 
     @Override protected String nullSafeConvertToString(final Float value) {

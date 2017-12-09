@@ -5,8 +5,8 @@ public class ShortAttributeWriter extends NumberAttributeWriter<Short> {
     public ShortAttributeWriter() {
     }
 
-    public ShortAttributeWriter(final StringFitter.Alignment alignment, final char filler) {
-        super(alignment, filler);
+    public ShortAttributeWriter(final char filler) {
+        super(filler);
     }
 
     @Override protected String nullSafeConvertToString(final Short value) {

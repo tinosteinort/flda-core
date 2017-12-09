@@ -143,3 +143,16 @@ See [StringListInterfaceTest](src/test/java/com/github/tinosteinort/flda/interfa
 FLDA can be used for many more data types than `FixedLenghtString`.
  With a new implementation of attributes, readers and writers, it will
  also work e.g. for `byte[]`.
+
+
+# Change History
+
+#### Migration to version ?.?.?
+* Move `StringFitter` from
+    `com.github.tinosteinort.flda.interfaces.fixedlengthstring.writer`
+    to
+    `com.github.tinosteinort.flda.interfaces.fixedlengthstring`
+* Extract `StringFitter.Alignment` into own Class: 
+ `com.github.tinosteinort.flda.interfaces.fixedlengthstring.Alignment`
+* Remove `Alignment` Class from FixedLengthString Writer Classes into
+ `com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthStringAttribute`

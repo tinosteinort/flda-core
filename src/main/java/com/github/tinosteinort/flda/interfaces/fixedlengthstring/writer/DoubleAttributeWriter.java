@@ -5,8 +5,8 @@ public class DoubleAttributeWriter extends NumberAttributeWriter<Double> {
     public DoubleAttributeWriter() {
     }
 
-    public DoubleAttributeWriter(final StringFitter.Alignment alignment, final char filler) {
-        super(alignment, filler);
+    public DoubleAttributeWriter(final char filler) {
+        super(filler);
     }
 
     @Override protected String nullSafeConvertToString(final Double value) {

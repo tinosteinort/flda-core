@@ -7,8 +7,8 @@ public class BigDecimalAttributeWriter extends NumberAttributeWriter<BigDecimal>
     public BigDecimalAttributeWriter() {
     }
 
-    public BigDecimalAttributeWriter(final StringFitter.Alignment alignment, final char filler) {
-        super(alignment, filler);
+    public BigDecimalAttributeWriter(final char filler) {
+        super(filler);
     }
 
     @Override protected String nullSafeConvertToString(final BigDecimal value) {

@@ -5,8 +5,8 @@ public class LongAttributeWriter extends NumberAttributeWriter<Long> {
     public LongAttributeWriter() {
     }
 
-    public LongAttributeWriter(final StringFitter.Alignment alignment, final char filler) {
-        super(alignment, filler);
+    public LongAttributeWriter(final char filler) {
+        super(filler);
     }
 
     @Override protected String nullSafeConvertToString(final Long value) {

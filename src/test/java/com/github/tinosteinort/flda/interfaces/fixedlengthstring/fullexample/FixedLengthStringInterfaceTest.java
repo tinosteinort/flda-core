@@ -12,7 +12,6 @@ import com.github.tinosteinort.flda.interfaces.fixedlengthstring.reader.IntegerA
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.reader.StringAttributeReader;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.writer.IntegerAttributeWriter;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.writer.StringAttributeWriter;
-import com.github.tinosteinort.flda.interfaces.fixedlengthstring.writer.StringFitter;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -107,7 +106,7 @@ public class FixedLengthStringInterfaceTest {
     @Test public void testExportCustomAttribute() {
 
         final AccessorConfig<FixedLengthString, FixedLengthStringAttribute<?>> localConfig = new AccessorConfigBuilder<>(config)
-                .registerWriter(PersonDescriptor.AGE, new IntegerAttributeWriter(StringFitter.Alignment.RIGHT, ' ')) // override default behaviour for special Attribute
+                .registerWriter(PersonDescriptor.AGE, new AgeIncrementIntegerWriter(2)) // override default behaviour for special Attribute
                 .build();
 
         final Person person = new Person();
@@ -124,7 +123,7 @@ public class FixedLengthStringInterfaceTest {
         writer.age(person.getAge());
 
         Assert.assertEquals(
-                new FixedLengthString("Tick      Duck        7"),
+                new FixedLengthString("Tick      Duck        9"),
                 row);
     }
 
@@ -144,5 +143,19 @@ public class FixedLengthStringInterfaceTest {
         // This two Lines of Code does not compile properly if everything works fine
 //        final String age = reader.read(PersonDescriptor.AGE);
 //        writer.write(PersonDescriptor.AGE, "123");
+    }
+}
+
+class AgeIncrementIntegerWriter extends IntegerAttributeWriter {
+
+    private final int yearsToIncrement;
+
+    public AgeIncrementIntegerWriter(final int yearsToIncrement) {
+        this.yearsToIncrement = yearsToIncrement;
+    }
+
+    @Override protected String nullSafeConvertToString(final Integer value) {
+        final Integer newValue = (value == null ? 0 : value) + yearsToIncrement;
+        return String.valueOf(newValue);
     }
 }

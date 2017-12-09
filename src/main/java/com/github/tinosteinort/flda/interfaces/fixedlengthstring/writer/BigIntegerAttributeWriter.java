@@ -7,8 +7,8 @@ public class BigIntegerAttributeWriter extends NumberAttributeWriter<BigInteger>
     public BigIntegerAttributeWriter() {
     }
 
-    public BigIntegerAttributeWriter(final StringFitter.Alignment alignment, final char filler) {
-        super(alignment, filler);
+    public BigIntegerAttributeWriter(final char filler) {
+        super(filler);
     }
 
     @Override protected String nullSafeConvertToString(final BigInteger value) {

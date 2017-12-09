@@ -1,23 +1,16 @@
-package com.github.tinosteinort.flda.interfaces.fixedlengthstring.writer;
+package com.github.tinosteinort.flda.interfaces.fixedlengthstring;
 
 import java.util.Arrays;
 
 public class StringFitter {
 
-    public enum Alignment {
-        LEFT,
-        RIGHT;
-    }
-
-    private final Alignment alignment;
     private final char filler;
 
-    public StringFitter(final Alignment alignment, final char filler) {
-        this.alignment = alignment;
+    public StringFitter(final char filler) {
         this.filler = filler;
     }
 
-    public String fit(final String value, final int length) {
+    public String fit(final String value, final Alignment alignment, final int length) {
         if (value == null) {
             final char[] data = new char[length];
             Arrays.fill(data, filler);
