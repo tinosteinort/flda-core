@@ -2,7 +2,7 @@ package com.github.tinosteinort.flda.interfaces.fixedlengthstring;
 
 import java.util.Arrays;
 
-public class StringFitter {
+public class StringUtils {
 
     public static String fit(final String value, final Alignment alignment, final int length, final char filler) {
         if (value == null) {

@@ -3,7 +3,7 @@ package com.github.tinosteinort.flda.interfaces.fixedlengthstring.writer;
 import com.github.tinosteinort.flda.accessor.writer.AttributeWriter;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthString;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthStringAttribute;
-import com.github.tinosteinort.flda.interfaces.fixedlengthstring.StringFitter;
+import com.github.tinosteinort.flda.interfaces.fixedlengthstring.StringUtils;
 
 public abstract class NumberAttributeWriter<T extends Number>
         implements AttributeWriter<FixedLengthString, T, FixedLengthStringAttribute<T>> {
@@ -11,7 +11,7 @@ public abstract class NumberAttributeWriter<T extends Number>
     @Override public void write(final FixedLengthString data, final FixedLengthStringAttribute<T> attribute,
                                 final T value) {
 
-        final String newValue = StringFitter.fit(convertToString(value), attribute.getAlignment(),
+        final String newValue = StringUtils.fit(convertToString(value), attribute.getAlignment(),
                 attribute.getLength(), attribute.getFiller());
 
         data.update(attribute.getIndex(), newValue);

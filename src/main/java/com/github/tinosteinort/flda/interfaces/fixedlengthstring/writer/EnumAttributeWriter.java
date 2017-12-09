@@ -3,7 +3,7 @@ package com.github.tinosteinort.flda.interfaces.fixedlengthstring.writer;
 import com.github.tinosteinort.flda.accessor.writer.AttributeWriter;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthString;
 import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthStringAttribute;
-import com.github.tinosteinort.flda.interfaces.fixedlengthstring.StringFitter;
+import com.github.tinosteinort.flda.interfaces.fixedlengthstring.StringUtils;
 
 public class EnumAttributeWriter<T extends Enum<T>>
         implements AttributeWriter<FixedLengthString, T, FixedLengthStringAttribute<T>> {
@@ -12,7 +12,7 @@ public class EnumAttributeWriter<T extends Enum<T>>
                                 final T value) {
 
         final String name = (value == null ? null : value.name());
-        final String newValue = StringFitter.fit(name, attribute.getAlignment(), attribute.getLength(),
+        final String newValue = StringUtils.fit(name, attribute.getAlignment(), attribute.getLength(),
                 attribute.getFiller());
 
         data.update(attribute.getIndex(), newValue);
