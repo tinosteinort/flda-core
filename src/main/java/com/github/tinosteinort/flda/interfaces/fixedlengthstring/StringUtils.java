@@ -32,7 +32,30 @@ public class StringUtils {
                                      final char filler) {
 
         final String value = data.substring(index, index + length);
-        // TODO trim filler char, not only whitespaces
-        return value.trim();
+        final int first = findFirstNonFiller(value, filler);
+        final int last = findLastNonFiller(value, filler);
+
+        if (first == -1 && last == -1) {
+            return "";
+        }
+        return value.substring(first, last + 1);
+    }
+
+    public static int findFirstNonFiller(final String value, final char filler) {
+        for (int i = 0; i < value.length(); i++) {
+            if (value.charAt(i) != filler) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static int findLastNonFiller(final String value, final char filler) {
+        for (int i = value.length() - 1; i >= 0; i--) {
+            if (value.charAt(i) != filler) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

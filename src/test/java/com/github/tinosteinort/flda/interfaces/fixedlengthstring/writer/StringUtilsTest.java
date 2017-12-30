@@ -71,4 +71,36 @@ public class StringUtilsTest {
         final FixedLengthString data = new FixedLengthString("##12345");
         assertEquals("12345", StringUtils.readAndTrim(data, 0, 7, '#'));
     }
+
+    @Test public void findFirstNonFillerFirstChar() {
+        assertEquals(0, StringUtils.findFirstNonFiller("1", '#'));
+    }
+
+    @Test public void findFirstNonFillerMiddleChar() {
+        assertEquals(1, StringUtils.findFirstNonFiller("*1*", '*'));
+    }
+
+    @Test public void findFirstNonFillerLastChar() {
+        assertEquals(4, StringUtils.findFirstNonFiller("____5", '_'));
+    }
+
+    @Test public void findFirstNonFillerNoCharFound() {
+        assertEquals(-1, StringUtils.findFirstNonFiller("     ", ' '));
+    }
+
+    @Test public void findLastNonFillerFirstChar() {
+        assertEquals(0, StringUtils.findLastNonFiller("1", '#'));
+    }
+
+    @Test public void findLastNonFillerMiddleChar() {
+        assertEquals(1, StringUtils.findLastNonFiller("*1*", '*'));
+    }
+
+    @Test public void findLastNonFillerLastChar() {
+        assertEquals(4, StringUtils.findLastNonFiller("____5", '_'));
+    }
+
+    @Test public void findLastNonFillerNoCharFound() {
+        assertEquals(-1, StringUtils.findLastNonFiller("     ", ' '));
+    }
 }
