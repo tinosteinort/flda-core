@@ -1,7 +1,5 @@
-package com.github.tinosteinort.flda.interfaces.stringlist;
+package com.github.tinosteinort.flda.interfaces.fixedlengthstring;
 
-import com.github.tinosteinort.flda.interfaces.fixedlengthstring.FixedLengthString;
-import com.github.tinosteinort.flda.interfaces.fixedlengthstring.LengthValidator;
 import org.junit.Test;
 
 public class LengthValidatorTest {

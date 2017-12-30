@@ -1,6 +1,5 @@
-package com.github.tinosteinort.flda.interfaces.fixedlengthstring;
+package com.github.tinosteinort.flda.interfaces.stringlist;
 
-import com.github.tinosteinort.flda.interfaces.stringlist.SizeValidator;
 import org.junit.Test;
 
 import java.util.ArrayList;
