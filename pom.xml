@@ -6,14 +6,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.tinosteinort</groupId>
-    <artifactId>flda</artifactId>
-    <version>1.2.1-SNAPSHOT</version>
+    <artifactId>flda-core</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>${project.artifactId}-${project.version}</name>
-    <url>https://github.com/tinosteinort/flda</url>
+    <url>https://github.com/tinosteinort/flda-core</url>
 
-    <description>FLDA - Fixed Length Data Accessor</description>
+    <description>FLDA - Core API</description>
 
     <licenses>
         <license>
@@ -24,9 +24,9 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git@github.com:tinosteinort/flda.git</connection>
-        <developerConnection>scm:git:git@github.com:tinosteinort/flda.git</developerConnection>
-        <url>https://github.com/tinosteinort/flda</url>
+        <connection>scm:git:git@github.com:tinosteinort/flda-core.git</connection>
+        <developerConnection>scm:git:git@github.com:tinosteinort/flda-core.git</developerConnection>
+        <url>https://github.com/tinosteinort/flda-core</url>
     </scm>
 
     <distributionManagement>
