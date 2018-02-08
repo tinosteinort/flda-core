@@ -121,10 +121,7 @@ There are different predefined validators:
 
 # Change History
 
-#### Features of version ?.?.?
-* `FixedLenghtString` implements `CharSequence`
-* API Update: move filler char and alignment into `FixedLengthStringAttribute` 
-#### Migration to version ?.?.?
+#### Migration to version 2.0
 * Move `StringFitter` from
     `com.github.tinosteinort.flda.interfaces.fixedlengthstring.writer`
     to
@@ -139,3 +136,6 @@ There are different predefined validators:
 * Method `FixedLengthString#getString()` replaced by `FixedLengthString#toString()`
     * Output of old `FixedLengthString#toString()` Method is not supported anymore
 * Class `StringReader` is replaced by Method `StringUtils#readAndTrim()`
+* `FixedLenghtString` implements `CharSequence`
+* API Update: move filler char and alignment into `FixedLengthStringAttribute` 
+* split project `flda` in `flda-core`,  `flda-fixedlengthstring` and  `flda-stringlist`
