@@ -1,4 +1,4 @@
-package com.github.tinosteinort.flda.accessor.writer;
+package com.github.tinosteinort.flda.accessor;
 
 import com.github.tinosteinort.flda.accessor.Attribute;
 

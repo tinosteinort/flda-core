@@ -1,7 +1,4 @@
-package com.github.tinosteinort.flda.accessor.reader;
-
-import com.github.tinosteinort.flda.accessor.AccessorConfig;
-import com.github.tinosteinort.flda.accessor.Attribute;
+package com.github.tinosteinort.flda.accessor;
 
 import java.util.Optional;
 

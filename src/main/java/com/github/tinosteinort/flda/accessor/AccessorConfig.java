@@ -1,18 +1,42 @@
 package com.github.tinosteinort.flda.accessor;
 
-import com.github.tinosteinort.flda.accessor.reader.AttributeReader;
-import com.github.tinosteinort.flda.accessor.writer.AttributeWriter;
-
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
 /**
  * Configuration of the Writer and Reader of an Interface.
  *
- * @param <TUPEL_TYPE> The Type of Data that should be accessed.
+ * @param <RECORD_TYPE> The Type of Data that should be accessed.
  * @param <ATTR_DESC_TYPE> The Type of the Description of an Attribute.
  */
-public interface AccessorConfig<TUPEL_TYPE, ATTR_DESC_TYPE extends Attribute<?>> {
+public abstract class AccessorConfig<RECORD_TYPE, ATTR_DESC_TYPE extends Attribute<?>> {
+
+    private final Map<Class<?>, AttributeReader<RECORD_TYPE, ?, ? extends Attribute<?>>> readersByType = new HashMap<>();
+    private final Map<Class<?>, AttributeWriter<RECORD_TYPE, ?, ? extends Attribute<?>>> writersByType = new HashMap<>();
+    private final Map<ATTR_DESC_TYPE, AttributeReader<RECORD_TYPE, ?, ? extends Attribute<?>>> readersByAttribute = new HashMap<>();
+    private final Map<ATTR_DESC_TYPE, AttributeWriter<RECORD_TYPE, ?, ? extends Attribute<?>>> writersByAttribute = new HashMap<>();
+    private final Supplier<RECORD_TYPE> recordFactory;
+    private RecordValidator<RECORD_TYPE> readValidator;
+    private RecordValidator<RECORD_TYPE> writeValidator;
+
+    AccessorConfig(final Map<Class<?>, AttributeReader<RECORD_TYPE, ?, ? extends Attribute<?>>> readersByType,
+                   final Map<Class<?>, AttributeWriter<RECORD_TYPE, ?, ? extends Attribute<?>>> writersByType,
+                   final Map<ATTR_DESC_TYPE, AttributeReader<RECORD_TYPE, ?, ? extends Attribute<?>>> readersByAttribute,
+                   final Map<ATTR_DESC_TYPE, AttributeWriter<RECORD_TYPE, ?, ? extends Attribute<?>>> writersByAttribute,
+                   final Supplier<RECORD_TYPE> recordFactory,
+                   final RecordValidator<RECORD_TYPE> readValidator,
+                   final RecordValidator<RECORD_TYPE> writeValidator) {
+
+        this.readersByType.putAll(readersByType);
+        this.writersByType.putAll(writersByType);
+        this.readersByAttribute.putAll(readersByAttribute);
+        this.writersByAttribute.putAll(writersByAttribute);
+        this.recordFactory = recordFactory;
+        this.readValidator = readValidator;
+        this.writeValidator = writeValidator;
+    }
 
     /**
      * Determines the Reader for the given Attribute. If a Reader is registered for a Type and a specific
@@ -21,7 +45,13 @@ public interface AccessorConfig<TUPEL_TYPE, ATTR_DESC_TYPE extends Attribute<?>>
      * @param <ATTR_TYPE> The Type of the Attribute.
      * @return The Reader for the given Attribute.
      */
-    <ATTR_TYPE> AttributeReader<TUPEL_TYPE, ATTR_TYPE, ATTR_DESC_TYPE> readerFor(ATTR_DESC_TYPE attribute);
+    <ATTR_TYPE> AttributeReader<RECORD_TYPE, ATTR_TYPE, ATTR_DESC_TYPE> readerFor(final ATTR_DESC_TYPE attribute) {
+        final AttributeReader<RECORD_TYPE, ?, ? extends Attribute<?>> readerByAttribute = readersByAttribute.get(attribute);
+        if (readerByAttribute == null) {
+            return (AttributeReader<RECORD_TYPE, ATTR_TYPE, ATTR_DESC_TYPE>) readersByType.get(attribute.getType());
+        }
+        return (AttributeReader<RECORD_TYPE, ATTR_TYPE, ATTR_DESC_TYPE>) readerByAttribute;
+    }
 
     /**
      * Determines the Writer for the given Attribute. If a Writer is registered for a Type and a specific
@@ -30,45 +60,77 @@ public interface AccessorConfig<TUPEL_TYPE, ATTR_DESC_TYPE extends Attribute<?>>
      * @param <ATTR_TYPE> The Type of the Attribute.
      * @return The Writer for the given Attribute.
      */
-    <ATTR_TYPE> AttributeWriter<TUPEL_TYPE, ATTR_TYPE, ATTR_DESC_TYPE> writerFor(ATTR_DESC_TYPE attribute);
+    <ATTR_TYPE> AttributeWriter<RECORD_TYPE, ATTR_TYPE, ATTR_DESC_TYPE> writerFor(
+            final ATTR_DESC_TYPE attribute) {
+        final AttributeWriter<RECORD_TYPE, ?, ? extends Attribute<?>> writerByAttribute =
+                writersByAttribute.get(attribute);
+        if (writerByAttribute == null) {
+            return (AttributeWriter<RECORD_TYPE, ATTR_TYPE, ATTR_DESC_TYPE>) writersByType.get(attribute.getType());
+        }
+        return (AttributeWriter<RECORD_TYPE, ATTR_TYPE, ATTR_DESC_TYPE>) writerByAttribute;
+    }
 
     /**
      * Creates a new Instance of a Record, which is usable by the
-     *  {@link com.github.tinosteinort.flda.accessor.reader.ReadAccessor}
-     *  and {@link com.github.tinosteinort.flda.accessor.writer.WriteAccessor}. To use this Method it is required
+     *  {@link ReadAccessor}
+     *  and {@link WriteAccessor}. To use this Method it is required
      *  to register a Record Factory with {@link AccessorConfigBuilder#withRecordFactory(Supplier)}.
      *
      * @throws RuntimeException If no Record Factory is set
      * @return A new Record Instance
      */
-    TUPEL_TYPE createNewRecord();
+    public RECORD_TYPE createNewRecord() {
+        if (recordFactory == null) {
+            throw new RuntimeException("Could not create record instance without RecordFactory");
+        }
+        return recordFactory.get();
+    }
 
     /**
-     * Execute the validation for a record when a {@link com.github.tinosteinort.flda.accessor.reader.ReadAccessor}
+     * Execute the validation for a record when a {@link ReadAccessor}
      *  is created.
-     * @param tupel the record for which the validation should be executed.
+     * @param record the record for which the validation should be executed.
      */
-    void validateForRead(TUPEL_TYPE tupel);
+    void validateForRead(final RECORD_TYPE record) {
+        if (readValidator != null) {
+            readValidator.validate(record);
+        }
+    }
 
     /**
-     * Execute the validation for a record when a {@link com.github.tinosteinort.flda.accessor.writer.WriteAccessor}
+     * Execute the validation for a record when a {@link WriteAccessor}
      *  is created.
-     * @param tupel the record for which the validation should be executed.
+     * @param record the record for which the validation should be executed.
      */
-    void validateForWrite(TUPEL_TYPE tupel);
+    void validateForWrite(final RECORD_TYPE record) {
+        if (writeValidator != null) {
+            writeValidator.validate(record);
+        }
+    }
 
     /**
      * @return All registered Readers.
      */
-    Map<Class<?>, AttributeReader<TUPEL_TYPE, ?, ? extends Attribute<?>>> readers();
+    Map<Class<?>, AttributeReader<RECORD_TYPE, ?, ? extends Attribute<?>>> readers() {
+        return Collections.unmodifiableMap(readersByType);
+    }
 
     /**
      * @return All registered Writers.
      */
-    Map<Class<?>, AttributeWriter<TUPEL_TYPE, ?, ? extends Attribute<?>>> writers();
+    Map<Class<?>, AttributeWriter<RECORD_TYPE, ?, ? extends Attribute<?>>> writers() {
+        return Collections.unmodifiableMap(writersByType);
+    }
 
-    Supplier<TUPEL_TYPE> recordFactory();
+    Supplier<RECORD_TYPE> recordFactory() {
+        return recordFactory;
+    }
 
-    RecordValidator<TUPEL_TYPE> readValidator();
-    RecordValidator<TUPEL_TYPE> writeValidator();
+    RecordValidator<RECORD_TYPE> readValidator() {
+        return readValidator;
+    }
+
+    RecordValidator<RECORD_TYPE> writeValidator() {
+        return writeValidator;
+    }
 }

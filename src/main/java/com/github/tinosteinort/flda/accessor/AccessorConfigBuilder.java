@@ -1,9 +1,5 @@
 package com.github.tinosteinort.flda.accessor;
 
-import com.github.tinosteinort.flda.accessor.reader.AttributeReader;
-import com.github.tinosteinort.flda.accessor.writer.AttributeWriter;
-
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -106,8 +102,8 @@ public class AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE extend
     }
 
     /**
-     * Sets a Validator for the {@link com.github.tinosteinort.flda.accessor.reader.ReadAccessor}. The validator is executed
-     *  whenever a new instance of a {@link com.github.tinosteinort.flda.accessor.reader.ReadAccessor} is created.
+     * Sets a Validator for the {@link ReadAccessor}. The validator is executed
+     *  whenever a new instance of a {@link ReadAccessor} is created.
      *
      * @param validator the validator which should validate a record.
      * @return The Builder.
@@ -118,8 +114,8 @@ public class AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE extend
     }
 
     /**
-     * Sets a Validator for the {@link com.github.tinosteinort.flda.accessor.writer.WriteAccessor}. The validator is executed
-     *  whenever a new instance of a {@link com.github.tinosteinort.flda.accessor.writer.WriteAccessor} is created.
+     * Sets a Validator for the {@link WriteAccessor}. The validator is executed
+     *  whenever a new instance of a {@link WriteAccessor} is created.
      *
      * @param validator the validator which should validate a record.
      * @return The Builder.
@@ -134,91 +130,8 @@ public class AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE extend
      * @return The new created {@link AccessorConfig}.
      */
     public AccessorConfig<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> build() {
-        return new AccessorConfigImpl<>(readersByType, writersByType, readersByAttribute, writersByAttribute,
-                recordFactory, readValidator, writeValidator);
-    }
-
-    private class AccessorConfigImpl<TYPE, ATTR_DESC_TYPE extends Attribute<?>> implements AccessorConfig<TYPE, ATTR_DESC_TYPE> {
-
-        private final Map<Class<?>, AttributeReader<TYPE, ?, ? extends Attribute<?>>> readersByType = new HashMap<>();
-        private final Map<Class<?>, AttributeWriter<TYPE, ?, ? extends Attribute<?>>> writersByType = new HashMap<>();
-        private final Map<ATTR_DESC_TYPE, AttributeReader<TYPE, ?, ? extends Attribute<?>>> readersByAttribute = new HashMap<>();
-        private final Map<ATTR_DESC_TYPE, AttributeWriter<TYPE, ?, ? extends Attribute<?>>> writersByAttribute = new HashMap<>();
-        private final Supplier<TYPE> recordFactory;
-        private RecordValidator<TYPE> readValidator;
-        private RecordValidator<TYPE> writeValidator;
-
-        private AccessorConfigImpl(
-                final Map<Class<?>, AttributeReader<TYPE, ?, ? extends Attribute<?>>> readersByType,
-                final Map<Class<?>, AttributeWriter<TYPE, ?, ? extends Attribute<?>>> writersByType,
-                final Map<ATTR_DESC_TYPE, AttributeReader<TYPE, ?, ? extends Attribute<?>>> readersByAttribute,
-                final Map<ATTR_DESC_TYPE, AttributeWriter<TYPE, ?, ? extends Attribute<?>>> writersByAttribute,
-                final Supplier<TYPE> recordFactory,
-                final RecordValidator<TYPE> readValidator,
-                final RecordValidator<TYPE> writeValidator
-                ) {
-            this.readersByType.putAll(readersByType);
-            this.writersByType.putAll(writersByType);
-            this.readersByAttribute.putAll(readersByAttribute);
-            this.writersByAttribute.putAll(writersByAttribute);
-            this.recordFactory = recordFactory;
-            this.readValidator = readValidator;
-            this.writeValidator = writeValidator;
-        }
-
-        @Override public <ATTR_TYPE> AttributeReader<TYPE, ATTR_TYPE, ATTR_DESC_TYPE> readerFor(final ATTR_DESC_TYPE attribute) {
-            final AttributeReader<TYPE, ?, ? extends Attribute<?>> readerByAttribute = readersByAttribute.get(attribute);
-            if (readerByAttribute == null) {
-                return (AttributeReader<TYPE, ATTR_TYPE, ATTR_DESC_TYPE>) readersByType.get(attribute.getType());
-            }
-            return (AttributeReader<TYPE, ATTR_TYPE, ATTR_DESC_TYPE>) readerByAttribute;
-        }
-
-        @Override public <ATTR_TYPE> AttributeWriter<TYPE, ATTR_TYPE, ATTR_DESC_TYPE> writerFor(final ATTR_DESC_TYPE attribute) {
-            final AttributeWriter<TYPE, ?, ? extends Attribute<?>> writerByAttribute = writersByAttribute.get(attribute);
-            if (writerByAttribute == null) {
-                return (AttributeWriter<TYPE, ATTR_TYPE, ATTR_DESC_TYPE>) writersByType.get(attribute.getType());
-            }
-            return (AttributeWriter<TYPE, ATTR_TYPE, ATTR_DESC_TYPE>) writerByAttribute;
-        }
-
-        @Override public TYPE createNewRecord() {
-            if (recordFactory == null) {
-                throw new RuntimeException("Could not create record instance without RecordFactory");
-            }
-            return recordFactory.get();
-        }
-
-        @Override public void validateForRead(final TYPE tupel) {
-            if (readValidator != null) {
-                readValidator.validate(tupel);
-            }
-        }
-
-        @Override public void validateForWrite(final TYPE tupel) {
-            if (writeValidator != null) {
-                writeValidator.validate(tupel);
-            }
-        }
-
-        @Override public Map<Class<?>, AttributeReader<TYPE, ?, ? extends Attribute<?>>> readers() {
-            return Collections.unmodifiableMap(readersByType);
-        }
-
-        @Override public Map<Class<?>, AttributeWriter<TYPE, ?, ? extends Attribute<?>>> writers() {
-            return Collections.unmodifiableMap(writersByType);
-        }
-
-        @Override public Supplier<TYPE> recordFactory() {
-            return recordFactory;
-        }
-
-        @Override public RecordValidator<TYPE> readValidator() {
-            return readValidator;
-        }
-
-        @Override public RecordValidator<TYPE> writeValidator() {
-            return writeValidator;
-        }
+        return new AccessorConfig<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE>(readersByType, writersByType,
+                readersByAttribute, writersByAttribute, recordFactory, readValidator, writeValidator) {
+        };
     }
 }
