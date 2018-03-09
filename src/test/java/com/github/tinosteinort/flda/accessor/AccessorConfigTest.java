@@ -1,12 +1,12 @@
 package com.github.tinosteinort.flda.accessor;
 
-import com.github.tinosteinort.flda.accessor.tupel.IntegerTupelAttributeReader;
-import com.github.tinosteinort.flda.accessor.tupel.StringTupelAttributeReader;
-import com.github.tinosteinort.flda.accessor.tupel.StringTupelAttributeWriter;
-import com.github.tinosteinort.flda.accessor.tupel.Tupel;
-import com.github.tinosteinort.flda.accessor.tupel.TupelAttribute;
-import com.github.tinosteinort.flda.accessor.tupel.TupelFactory;
-import com.github.tinosteinort.flda.accessor.tupel.TupelSizeValidator;
+import com.github.tinosteinort.flda.accessor.tuple.IntegerTupleAttributeReader;
+import com.github.tinosteinort.flda.accessor.tuple.StringTupleAttributeReader;
+import com.github.tinosteinort.flda.accessor.tuple.StringTupleAttributeWriter;
+import com.github.tinosteinort.flda.accessor.tuple.Tuple;
+import com.github.tinosteinort.flda.accessor.tuple.TupleAttribute;
+import com.github.tinosteinort.flda.accessor.tuple.TupleFactory;
+import com.github.tinosteinort.flda.accessor.tuple.TupleSizeValidator;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -15,25 +15,25 @@ import static org.junit.Assert.assertNull;
 
 public class AccessorConfigTest {
 
-    private final TupelAttribute<String> NAME = new TupelAttribute<>(String.class, 0);
-    private final TupelAttribute<Integer> AGE = new TupelAttribute<>(Integer.class, 1);
+    private final TupleAttribute<String> NAME = new TupleAttribute<>(String.class, 0);
+    private final TupleAttribute<Integer> AGE = new TupleAttribute<>(Integer.class, 1);
 
     @Test public void newConfigNoReaders() {
-        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
+        final AccessorConfig<Tuple, TupleAttribute<?>> config = new AccessorConfigBuilder<Tuple, TupleAttribute<?>>()
                 .build();
 
         assertEquals(0, config.readers().size());
     }
 
     @Test public void newConfigNoWriters() {
-        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
+        final AccessorConfig<Tuple, TupleAttribute<?>> config = new AccessorConfigBuilder<Tuple, TupleAttribute<?>>()
                 .build();
 
         assertEquals(0, config.readers().size());
     }
 
     @Test public void newConfigNoRecordFactory() {
-        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
+        final AccessorConfig<Tuple, TupleAttribute<?>> config = new AccessorConfigBuilder<Tuple, TupleAttribute<?>>()
                 .build();
 
         assertNull(config.recordFactory());
@@ -41,15 +41,15 @@ public class AccessorConfigTest {
 
     @Test(expected = RuntimeException.class)
     public void newConfigNoRecordFactoryButCreateRecord() {
-        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
+        final AccessorConfig<Tuple, TupleAttribute<?>> config = new AccessorConfigBuilder<Tuple, TupleAttribute<?>>()
                 .build();
 
         config.createNewRecord();
     }
 
     @Test public void newConfigWithRecordFactory() {
-        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
-                .withRecordFactory(new TupelFactory(3))
+        final AccessorConfig<Tuple, TupleAttribute<?>> config = new AccessorConfigBuilder<Tuple, TupleAttribute<?>>()
+                .withRecordFactory(new TupleFactory(3))
                 .build();
 
         assertNotNull(config.recordFactory());
@@ -57,15 +57,15 @@ public class AccessorConfigTest {
     }
 
     @Test public void newConfigNoReadValidator() {
-        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
+        final AccessorConfig<Tuple, TupleAttribute<?>> config = new AccessorConfigBuilder<Tuple, TupleAttribute<?>>()
                 .build();
 
         assertNull(config.readValidator());
     }
 
     @Test public void newConfigWithReadValidator() {
-        final TupelSizeValidator validator = new TupelSizeValidator(3);
-        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
+        final TupleSizeValidator validator = new TupleSizeValidator(3);
+        final AccessorConfig<Tuple, TupleAttribute<?>> config = new AccessorConfigBuilder<Tuple, TupleAttribute<?>>()
                 .withReadValidator(validator)
                 .build();
 
@@ -75,15 +75,15 @@ public class AccessorConfigTest {
     }
 
     @Test public void newConfigNoWriteValidator() {
-        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
+        final AccessorConfig<Tuple, TupleAttribute<?>> config = new AccessorConfigBuilder<Tuple, TupleAttribute<?>>()
                 .build();
 
         assertNull(config.writeValidator());
     }
 
     @Test public void newConfigWithWriteValidator() {
-        final TupelSizeValidator validator = new TupelSizeValidator(3);
-        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
+        final TupleSizeValidator validator = new TupleSizeValidator(3);
+        final AccessorConfig<Tuple, TupleAttribute<?>> config = new AccessorConfigBuilder<Tuple, TupleAttribute<?>>()
                 .withWriteValidator(validator)
                 .build();
 
@@ -93,41 +93,41 @@ public class AccessorConfigTest {
     }
 
     @Test public void validateForReadRunsWithoutValidator() {
-        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
+        final AccessorConfig<Tuple, TupleAttribute<?>> config = new AccessorConfigBuilder<Tuple, TupleAttribute<?>>()
                 .build();
 
-        config.validateForRead(new Tupel(3));
+        config.validateForRead(new Tuple(3));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void validateForReadWithValidatorAndExpectedError() {
-        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
-                .withReadValidator(new TupelSizeValidator(4))
+        final AccessorConfig<Tuple, TupleAttribute<?>> config = new AccessorConfigBuilder<Tuple, TupleAttribute<?>>()
+                .withReadValidator(new TupleSizeValidator(4))
                 .build();
 
-        config.validateForRead(new Tupel(3));
+        config.validateForRead(new Tuple(3));
     }
 
     @Test public void validateForWriteRunsWithoutValidator() {
-        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
+        final AccessorConfig<Tuple, TupleAttribute<?>> config = new AccessorConfigBuilder<Tuple, TupleAttribute<?>>()
                 .build();
 
-        config.validateForWrite(new Tupel(3));
+        config.validateForWrite(new Tuple(3));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void validateForWriteWithValidatorAndExpectedError() {
-        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
-                .withWriteValidator(new TupelSizeValidator(4))
+        final AccessorConfig<Tuple, TupleAttribute<?>> config = new AccessorConfigBuilder<Tuple, TupleAttribute<?>>()
+                .withWriteValidator(new TupleSizeValidator(4))
                 .build();
 
-        config.validateForWrite(new Tupel(3));
+        config.validateForWrite(new Tuple(3));
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void readersAreUnmodifiableTestRemove() {
-        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
-                .registerReader(String.class, new StringTupelAttributeReader())
+        final AccessorConfig<Tuple, TupleAttribute<?>> config = new AccessorConfigBuilder<Tuple, TupleAttribute<?>>()
+                .registerReader(String.class, new StringTupleAttributeReader())
                 .build();
 
         config.readers().entrySet().iterator().remove();
@@ -135,38 +135,38 @@ public class AccessorConfigTest {
 
     @Test(expected = UnsupportedOperationException.class)
     public void readersAreUnmodifiableTestAdd() {
-        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
-                .registerReader(String.class, new StringTupelAttributeReader())
+        final AccessorConfig<Tuple, TupleAttribute<?>> config = new AccessorConfigBuilder<Tuple, TupleAttribute<?>>()
+                .registerReader(String.class, new StringTupleAttributeReader())
                 .build();
 
-        config.readers().put(Integer.class, new IntegerTupelAttributeReader());
+        config.readers().put(Integer.class, new IntegerTupleAttributeReader());
     }
 
     @Test public void determineReaderForAttributeByClass() {
-        final StringTupelAttributeReader reader = new StringTupelAttributeReader();
-        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
+        final StringTupleAttributeReader reader = new StringTupleAttributeReader();
+        final AccessorConfig<Tuple, TupleAttribute<?>> config = new AccessorConfigBuilder<Tuple, TupleAttribute<?>>()
                 .registerReader(String.class, reader)
                 .build();
 
-        final AttributeReader<Tupel, String, TupelAttribute<?>> resolvedReader = config.readerFor(NAME);
+        final AttributeReader<Tuple, String, TupleAttribute<?>> resolvedReader = config.readerFor(NAME);
         assertNotNull(resolvedReader);
         assertEquals(reader, resolvedReader);
     }
 
     @Test public void determineWriterForAttributeByClass() {
-        final StringTupelAttributeWriter writer = new StringTupelAttributeWriter();
-        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
+        final StringTupleAttributeWriter writer = new StringTupleAttributeWriter();
+        final AccessorConfig<Tuple, TupleAttribute<?>> config = new AccessorConfigBuilder<Tuple, TupleAttribute<?>>()
                 .registerWriter(String.class, writer)
                 .build();
 
-        final AttributeWriter<Tupel, String, TupelAttribute<?>> resolvedWriter = config.writerFor(NAME);
+        final AttributeWriter<Tuple, String, TupleAttribute<?>> resolvedWriter = config.writerFor(NAME);
         assertNotNull(resolvedWriter);
         assertEquals(writer, resolvedWriter);
     }
 
     @Test public void writerNotFound() {
-        final StringTupelAttributeWriter writer = new StringTupelAttributeWriter();
-        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
+        final StringTupleAttributeWriter writer = new StringTupleAttributeWriter();
+        final AccessorConfig<Tuple, TupleAttribute<?>> config = new AccessorConfigBuilder<Tuple, TupleAttribute<?>>()
                 .registerWriter(String.class, writer)
                 .build();
 
@@ -174,8 +174,8 @@ public class AccessorConfigTest {
     }
 
     @Test public void readerNotFound() {
-        final IntegerTupelAttributeReader reader = new IntegerTupelAttributeReader();
-        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
+        final IntegerTupleAttributeReader reader = new IntegerTupleAttributeReader();
+        final AccessorConfig<Tuple, TupleAttribute<?>> config = new AccessorConfigBuilder<Tuple, TupleAttribute<?>>()
                 .registerReader(Integer.class, reader)
                 .build();
 
@@ -183,27 +183,27 @@ public class AccessorConfigTest {
     }
 
     @Test public void forAttributeRegisteredReaderOverwritesForClassRegisteredReader() {
-        final StringTupelAttributeReader reader = new StringTupelAttributeReader();
-        final StringTupelAttributeReader overwritingReader = new StringTupelAttributeReader();
-        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
+        final StringTupleAttributeReader reader = new StringTupleAttributeReader();
+        final StringTupleAttributeReader overwritingReader = new StringTupleAttributeReader();
+        final AccessorConfig<Tuple, TupleAttribute<?>> config = new AccessorConfigBuilder<Tuple, TupleAttribute<?>>()
                 .registerReader(String.class, reader)
                 .registerReader(NAME, overwritingReader)
                 .build();
 
-        final AttributeReader<Tupel, String, TupelAttribute<?>> resolvedReader = config.readerFor(NAME);
+        final AttributeReader<Tuple, String, TupleAttribute<?>> resolvedReader = config.readerFor(NAME);
         assertNotNull(resolvedReader);
         assertEquals(overwritingReader, resolvedReader);
     }
 
     @Test public void forAttributeRegisteredWriterOverwritesForClassRegisteredWriter() {
-        final StringTupelAttributeWriter writer = new StringTupelAttributeWriter();
-        final StringTupelAttributeWriter overwritingWriter = new StringTupelAttributeWriter();
-        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
+        final StringTupleAttributeWriter writer = new StringTupleAttributeWriter();
+        final StringTupleAttributeWriter overwritingWriter = new StringTupleAttributeWriter();
+        final AccessorConfig<Tuple, TupleAttribute<?>> config = new AccessorConfigBuilder<Tuple, TupleAttribute<?>>()
                 .registerWriter(String.class, writer)
                 .registerWriter(NAME, overwritingWriter)
                 .build();
 
-        final AttributeWriter<Tupel, String, TupelAttribute<?>> resolvedWriter = config.writerFor(NAME);
+        final AttributeWriter<Tuple, String, TupleAttribute<?>> resolvedWriter = config.writerFor(NAME);
         assertNotNull(resolvedWriter);
         assertEquals(overwritingWriter, resolvedWriter);
     }

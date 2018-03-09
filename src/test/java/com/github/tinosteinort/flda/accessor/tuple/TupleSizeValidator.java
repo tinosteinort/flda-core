@@ -1,16 +1,16 @@
-package com.github.tinosteinort.flda.accessor.tupel;
+package com.github.tinosteinort.flda.accessor.tuple;
 
 import com.github.tinosteinort.flda.accessor.RecordValidator;
 
-public class TupelSizeValidator implements RecordValidator<Tupel> {
+public class TupleSizeValidator implements RecordValidator<Tuple> {
 
     private final int expectedSize;
 
-    public TupelSizeValidator(final int expectedSize) {
+    public TupleSizeValidator(final int expectedSize) {
         this.expectedSize = expectedSize;
     }
 
-    @Override public void validate(final Tupel record) {
+    @Override public void validate(final Tuple record) {
         if (record == null) {
             throw new NullPointerException("null not allowed");
         }

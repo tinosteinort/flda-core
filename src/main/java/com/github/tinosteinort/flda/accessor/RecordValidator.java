@@ -1,6 +1,6 @@
 package com.github.tinosteinort.flda.accessor;
 
-public interface RecordValidator<TUPEL_TYPE> {
+public interface RecordValidator<RECORD_TYPE> {
 
-    void validate(TUPEL_TYPE tupel);
+    void validate(RECORD_TYPE record);
 }

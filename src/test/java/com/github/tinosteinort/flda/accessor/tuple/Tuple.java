@@ -1,15 +1,15 @@
-package com.github.tinosteinort.flda.accessor.tupel;
+package com.github.tinosteinort.flda.accessor.tuple;
 
 import java.util.Arrays;
 
 /**
  * Some type of a record for the unit tests
  */
-public class Tupel {
+public class Tuple {
 
     private final Object[] data;
 
-    public Tupel(final int size) {
+    public Tuple(final int size) {
         this.data = new Object[size];
     }
 
@@ -29,10 +29,10 @@ public class Tupel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Tupel tupel = (Tupel) o;
+        Tuple tuple = (Tuple) o;
 
         // Probably incorrect - comparing Object[] arrays with Arrays.equals
-        return Arrays.equals(data, tupel.data);
+        return Arrays.equals(data, tuple.data);
     }
 
     @Override public int hashCode() {

@@ -5,19 +5,19 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * This is the Registry for all Readers and Writers for a specific Tupel Type.
- * @param <TUPEL_TYPE> The Type of a Data Row, which should be accessed.
- * @param <ATTRIBUTE_DESCRIPTION_TYPE> The Type of the AttributeDescription.
+ * This is the registry for all readers and writers for a specific record type.
+ * @param <RECORD_TYPE> The type of a data row, which should be accessed.
+ * @param <ATTRIBUTE_DESCRIPTION_TYPE> The type of the AttributeDescription.
  */
-public class AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE extends Attribute<?>> {
+public class AccessorConfigBuilder<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE extends Attribute<?>> {
 
-    private final Map<Class<?>, AttributeReader<TUPEL_TYPE, ?, ? extends Attribute<?>>> readersByType = new HashMap<>();
-    private final Map<Class<?>, AttributeWriter<TUPEL_TYPE, ?, ? extends Attribute<?>>> writersByType = new HashMap<>();
-    private final Map<ATTRIBUTE_DESCRIPTION_TYPE, AttributeReader<TUPEL_TYPE, ?, ? extends Attribute<?>>> readersByAttribute = new HashMap<>();
-    private final Map<ATTRIBUTE_DESCRIPTION_TYPE, AttributeWriter<TUPEL_TYPE, ?, ? extends Attribute<?>>> writersByAttribute = new HashMap<>();
-    private Supplier<TUPEL_TYPE> recordFactory;
-    private RecordValidator<TUPEL_TYPE> readValidator;
-    private RecordValidator<TUPEL_TYPE> writeValidator;
+    private final Map<Class<?>, AttributeReader<RECORD_TYPE, ?, ? extends Attribute<?>>> readersByType = new HashMap<>();
+    private final Map<Class<?>, AttributeWriter<RECORD_TYPE, ?, ? extends Attribute<?>>> writersByType = new HashMap<>();
+    private final Map<ATTRIBUTE_DESCRIPTION_TYPE, AttributeReader<RECORD_TYPE, ?, ? extends Attribute<?>>> readersByAttribute = new HashMap<>();
+    private final Map<ATTRIBUTE_DESCRIPTION_TYPE, AttributeWriter<RECORD_TYPE, ?, ? extends Attribute<?>>> writersByAttribute = new HashMap<>();
+    private Supplier<RECORD_TYPE> recordFactory;
+    private RecordValidator<RECORD_TYPE> readValidator;
+    private RecordValidator<RECORD_TYPE> writeValidator;
 
     /**
      * Creates a empty {@code AccessorConfigBuilder} without any registerd Readers and Writers.
@@ -30,7 +30,7 @@ public class AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE extend
      * Creates a new Instance with the Readers and Writers of the given {@code baseConfig}.
      * @param baseConfig A base Configuration from which the Readers and Writers should be used.
      */
-    public AccessorConfigBuilder(final AccessorConfig<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> baseConfig) {
+    public AccessorConfigBuilder(final AccessorConfig<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> baseConfig) {
         readersByType.putAll(baseConfig.readers());
         writersByType.putAll(baseConfig.writers());
         this.recordFactory = baseConfig.recordFactory();
@@ -45,8 +45,8 @@ public class AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE extend
      * @param <T> The Type of the Attribute.
      * @return The Builder.
      */
-    public <T> AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> registerReader(final Class<T> type,
-            final AttributeReader<TUPEL_TYPE, T, ? extends Attribute<T>> reader) {
+    public <T> AccessorConfigBuilder<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> registerReader(final Class<T> type,
+            final AttributeReader<RECORD_TYPE, T, ? extends Attribute<T>> reader) {
         readersByType.put(type, reader);
         return this;
     }
@@ -58,8 +58,8 @@ public class AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE extend
      * @param <T> The Type of the Attribute.
      * @return The Builder.
      */
-    public <T> AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> registerWriter(final Class<T> type,
-            final AttributeWriter<TUPEL_TYPE, T, ? extends Attribute<T>> writer) {
+    public <T> AccessorConfigBuilder<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> registerWriter(final Class<T> type,
+           final AttributeWriter<RECORD_TYPE, T, ? extends Attribute<T>> writer) {
         writersByType.put(type, writer);
         return this;
     }
@@ -71,8 +71,8 @@ public class AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE extend
      * @param <T> The Type of the Attribute.
      * @return The Builder.
      */
-    public <T> AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> registerReader(final ATTRIBUTE_DESCRIPTION_TYPE attribute,
-            final AttributeReader<TUPEL_TYPE, T, ? extends Attribute<T>> reader) {
+    public <T> AccessorConfigBuilder<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> registerReader(final ATTRIBUTE_DESCRIPTION_TYPE attribute,
+                                                                                             final AttributeReader<RECORD_TYPE, T, ? extends Attribute<T>> reader) {
         readersByAttribute.put(attribute, reader);
         return this;
     }
@@ -84,8 +84,8 @@ public class AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE extend
      * @param <T> The Type of the Attribute.
      * @return The Builder.
      */
-    public <T> AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> registerWriter(final ATTRIBUTE_DESCRIPTION_TYPE attribute,
-            final AttributeWriter<TUPEL_TYPE, T, ? extends Attribute<T>> writer) {
+    public <T> AccessorConfigBuilder<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> registerWriter(final ATTRIBUTE_DESCRIPTION_TYPE attribute,
+            final AttributeWriter<RECORD_TYPE, T, ? extends Attribute<T>> writer) {
         writersByAttribute.put(attribute, writer);
         return this;
     }
@@ -96,7 +96,7 @@ public class AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE extend
      * @param recordFactory
      * @return The Builder.
      */
-    public AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> withRecordFactory(final Supplier<TUPEL_TYPE> recordFactory) {
+    public AccessorConfigBuilder<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> withRecordFactory(final Supplier<RECORD_TYPE> recordFactory) {
         this.recordFactory = recordFactory;
         return this;
     }
@@ -108,7 +108,7 @@ public class AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE extend
      * @param validator the validator which should validate a record.
      * @return The Builder.
      */
-    public AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> withReadValidator(final RecordValidator<TUPEL_TYPE> validator) {
+    public AccessorConfigBuilder<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> withReadValidator(final RecordValidator<RECORD_TYPE> validator) {
         this.readValidator = validator;
         return this;
     }
@@ -120,7 +120,7 @@ public class AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE extend
      * @param validator the validator which should validate a record.
      * @return The Builder.
      */
-    public AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> withWriteValidator(final RecordValidator<TUPEL_TYPE> validator) {
+    public AccessorConfigBuilder<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> withWriteValidator(final RecordValidator<RECORD_TYPE> validator) {
         this.writeValidator = validator;
         return this;
     }
@@ -129,8 +129,8 @@ public class AccessorConfigBuilder<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE extend
      * Creates a new {@link AccessorConfig} with the registered Reader and Writer.
      * @return The new created {@link AccessorConfig}.
      */
-    public AccessorConfig<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> build() {
-        return new AccessorConfig<TUPEL_TYPE, ATTRIBUTE_DESCRIPTION_TYPE>(readersByType, writersByType,
+    public AccessorConfig<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> build() {
+        return new AccessorConfig<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE>(readersByType, writersByType,
                 readersByAttribute, writersByAttribute, recordFactory, readValidator, writeValidator) {
         };
     }
