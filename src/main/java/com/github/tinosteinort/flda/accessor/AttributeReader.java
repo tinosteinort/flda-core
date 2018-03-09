@@ -1,7 +1,5 @@
 package com.github.tinosteinort.flda.accessor;
 
-import com.github.tinosteinort.flda.accessor.Attribute;
-
 /**
  * Interface for a Reader. Implementations defines how a specific Attribute should be read.
  * @param <TUPEL_TYPE> The Type of the Data.

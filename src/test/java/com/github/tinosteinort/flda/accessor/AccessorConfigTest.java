@@ -1,5 +1,8 @@
 package com.github.tinosteinort.flda.accessor;
 
+import com.github.tinosteinort.flda.accessor.tupel.IntegerTupelAttributeReader;
+import com.github.tinosteinort.flda.accessor.tupel.StringTupelAttributeReader;
+import com.github.tinosteinort.flda.accessor.tupel.StringTupelAttributeWriter;
 import com.github.tinosteinort.flda.accessor.tupel.Tupel;
 import com.github.tinosteinort.flda.accessor.tupel.TupelAttribute;
 import com.github.tinosteinort.flda.accessor.tupel.TupelFactory;
@@ -12,6 +15,8 @@ import static org.junit.Assert.assertNull;
 
 public class AccessorConfigTest {
 
+    private final TupelAttribute<String> NAME = new TupelAttribute<>(String.class, 0);
+    private final TupelAttribute<Integer> AGE = new TupelAttribute<>(Integer.class, 1);
 
     @Test public void newConfigNoReaders() {
         final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
@@ -119,6 +124,87 @@ public class AccessorConfigTest {
         config.validateForWrite(new Tupel(3));
     }
 
-    // TODO readers() / writers() is unmodifiable
-    // TODO writerFor(...) / readerFor(...)
+    @Test(expected = UnsupportedOperationException.class)
+    public void readersAreUnmodifiableTestRemove() {
+        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
+                .registerReader(String.class, new StringTupelAttributeReader())
+                .build();
+
+        config.readers().entrySet().iterator().remove();
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void readersAreUnmodifiableTestAdd() {
+        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
+                .registerReader(String.class, new StringTupelAttributeReader())
+                .build();
+
+        config.readers().put(Integer.class, new IntegerTupelAttributeReader());
+    }
+
+    @Test public void determineReaderForAttributeByClass() {
+        final StringTupelAttributeReader reader = new StringTupelAttributeReader();
+        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
+                .registerReader(String.class, reader)
+                .build();
+
+        final AttributeReader<Tupel, String, TupelAttribute<?>> resolvedReader = config.readerFor(NAME);
+        assertNotNull(resolvedReader);
+        assertEquals(reader, resolvedReader);
+    }
+
+    @Test public void determineWriterForAttributeByClass() {
+        final StringTupelAttributeWriter writer = new StringTupelAttributeWriter();
+        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
+                .registerWriter(String.class, writer)
+                .build();
+
+        final AttributeWriter<Tupel, String, TupelAttribute<?>> resolvedWriter = config.writerFor(NAME);
+        assertNotNull(resolvedWriter);
+        assertEquals(writer, resolvedWriter);
+    }
+
+    @Test public void writerNotFound() {
+        final StringTupelAttributeWriter writer = new StringTupelAttributeWriter();
+        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
+                .registerWriter(String.class, writer)
+                .build();
+
+        assertNull(config.writerFor(AGE));
+    }
+
+    @Test public void readerNotFound() {
+        final IntegerTupelAttributeReader reader = new IntegerTupelAttributeReader();
+        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
+                .registerReader(Integer.class, reader)
+                .build();
+
+        assertNull(config.readerFor(NAME));
+    }
+
+    @Test public void forAttributeRegisteredReaderOverwritesForClassRegisteredReader() {
+        final StringTupelAttributeReader reader = new StringTupelAttributeReader();
+        final StringTupelAttributeReader overwritingReader = new StringTupelAttributeReader();
+        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
+                .registerReader(String.class, reader)
+                .registerReader(NAME, overwritingReader)
+                .build();
+
+        final AttributeReader<Tupel, String, TupelAttribute<?>> resolvedReader = config.readerFor(NAME);
+        assertNotNull(resolvedReader);
+        assertEquals(overwritingReader, resolvedReader);
+    }
+
+    @Test public void forAttributeRegisteredWriterOverwritesForClassRegisteredWriter() {
+        final StringTupelAttributeWriter writer = new StringTupelAttributeWriter();
+        final StringTupelAttributeWriter overwritingWriter = new StringTupelAttributeWriter();
+        final AccessorConfig<Tupel, TupelAttribute<?>> config = new AccessorConfigBuilder<Tupel, TupelAttribute<?>>()
+                .registerWriter(String.class, writer)
+                .registerWriter(NAME, overwritingWriter)
+                .build();
+
+        final AttributeWriter<Tupel, String, TupelAttribute<?>> resolvedWriter = config.writerFor(NAME);
+        assertNotNull(resolvedWriter);
+        assertEquals(overwritingWriter, resolvedWriter);
+    }
 }
