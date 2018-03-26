@@ -1,3 +1,0 @@
-John;Doe;30
-Janina;Doe;30
-Donnie;Doe;30

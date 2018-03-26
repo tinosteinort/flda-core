@@ -139,3 +139,6 @@ There are different predefined validators:
 * `FixedLenghtString` implements `CharSequence`
 * API Update: move filler char and alignment into `FixedLengthStringAttribute` 
 * split project `flda` in `flda-core`,  `flda-fixedlengthstring` and  `flda-stringlist`
+* introduce own `RecordFactory<T>` interface. `Supplier<T>` was used before
+* change `AccessorConfig` from interface to abstract class. Needed to clean up the
+ API
