@@ -1,6 +1,6 @@
 # FLDA - Fixed Length Data Accessor
 
-[![Maven Status](https://maven-badges.herokuapp.com/maven-central/com.github.tinosteinort/flda/badge.svg?style=flat)](http://mvnrepository.com/artifact/com.github.tinosteinort/flda)
+[![Maven Status](https://maven-badges.herokuapp.com/maven-central/com.github.tinosteinort/flda-core/badge.svg?style=flat)](http://mvnrepository.com/artifact/com.github.tinosteinort/flda)
 
 FLDA supports reading data as well as writing data of records with a fix size.
 
