@@ -55,6 +55,7 @@
         <version.maven-source-plugin>2.2.1</version.maven-source-plugin>
         <version.maven-javadoc-plugin>2.9.1</version.maven-javadoc-plugin>
         <version.maven-gpg-plugin>1.5</version.maven-gpg-plugin>
+        <version.maven-jar-plugin>3.0.2</version.maven-jar-plugin>
         <version.junit>4.12</version.junit>
     </properties>
 
@@ -94,6 +95,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
             </plugin>
         </plugins>
 
@@ -147,6 +152,18 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${version.maven-jar-plugin}</version>
+                    <configuration>
+                        <archive>
+                            <manifestEntries>
+                                <Automatic-Module-Name>com.github.tinosteinort.flda.accessor</Automatic-Module-Name>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

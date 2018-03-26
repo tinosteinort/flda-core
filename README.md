@@ -41,6 +41,13 @@ To use FLDA, include the following artifact:
 </dependency>
 ```
 
+## Java 9 Module
+
+The Automatic Module Name of this library is:
+```
+com.github.tinosteinort.flda.accessor
+```
+
 ## Short Description of the Accessor Concept
 
 Within the Accessor Concept there are different parts:
