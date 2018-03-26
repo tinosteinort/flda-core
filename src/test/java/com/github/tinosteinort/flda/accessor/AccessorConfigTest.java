@@ -207,4 +207,20 @@ public class AccessorConfigTest {
         assertNotNull(resolvedWriter);
         assertEquals(overwritingWriter, resolvedWriter);
     }
+
+    @Test public void newReadAccessor() {
+        final AccessorConfig<Tuple, TupleAttribute<?>> config = new AccessorConfigBuilder<Tuple, TupleAttribute<?>>()
+                .registerReader(String.class, new StringTupleAttributeReader())
+                .build();
+
+        assertNotNull(config.newReadAccessor(new Tuple(5)));
+    }
+
+    @Test public void newWriteAccessor() {
+        final AccessorConfig<Tuple, TupleAttribute<?>> config = new AccessorConfigBuilder<Tuple, TupleAttribute<?>>()
+                .registerWriter(String.class, new StringTupleAttributeWriter())
+                .build();
+
+        assertNotNull(config.newWriteAccessor(new Tuple(5)));
+    }
 }

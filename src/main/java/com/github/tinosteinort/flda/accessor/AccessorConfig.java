@@ -17,17 +17,18 @@ public abstract class AccessorConfig<RECORD_TYPE, ATTR_DESC_TYPE extends Attribu
     private final Map<Class<?>, AttributeWriter<RECORD_TYPE, ?, ? extends Attribute<?>>> writersByType = new HashMap<>();
     private final Map<ATTR_DESC_TYPE, AttributeReader<RECORD_TYPE, ?, ? extends Attribute<?>>> readersByAttribute = new HashMap<>();
     private final Map<ATTR_DESC_TYPE, AttributeWriter<RECORD_TYPE, ?, ? extends Attribute<?>>> writersByAttribute = new HashMap<>();
-    private final Supplier<RECORD_TYPE> recordFactory;
+    private final RecordFactory<RECORD_TYPE> recordFactory;
     private RecordValidator<RECORD_TYPE> readValidator;
     private RecordValidator<RECORD_TYPE> writeValidator;
 
-    AccessorConfig(final Map<Class<?>, AttributeReader<RECORD_TYPE, ?, ? extends Attribute<?>>> readersByType,
-                   final Map<Class<?>, AttributeWriter<RECORD_TYPE, ?, ? extends Attribute<?>>> writersByType,
-                   final Map<ATTR_DESC_TYPE, AttributeReader<RECORD_TYPE, ?, ? extends Attribute<?>>> readersByAttribute,
-                   final Map<ATTR_DESC_TYPE, AttributeWriter<RECORD_TYPE, ?, ? extends Attribute<?>>> writersByAttribute,
-                   final Supplier<RECORD_TYPE> recordFactory,
-                   final RecordValidator<RECORD_TYPE> readValidator,
-                   final RecordValidator<RECORD_TYPE> writeValidator) {
+    protected AccessorConfig(
+            final Map<Class<?>, AttributeReader<RECORD_TYPE, ?, ? extends Attribute<?>>> readersByType,
+            final Map<Class<?>, AttributeWriter<RECORD_TYPE, ?, ? extends Attribute<?>>> writersByType,
+            final Map<ATTR_DESC_TYPE, AttributeReader<RECORD_TYPE, ?, ? extends Attribute<?>>> readersByAttribute,
+            final Map<ATTR_DESC_TYPE, AttributeWriter<RECORD_TYPE, ?, ? extends Attribute<?>>> writersByAttribute,
+            final RecordFactory<RECORD_TYPE> recordFactory,
+            final RecordValidator<RECORD_TYPE> readValidator,
+            final RecordValidator<RECORD_TYPE> writeValidator) {
 
         this.readersByType.putAll(readersByType);
         this.writersByType.putAll(writersByType);
@@ -45,8 +46,10 @@ public abstract class AccessorConfig<RECORD_TYPE, ATTR_DESC_TYPE extends Attribu
      * @param <ATTR_TYPE> The Type of the Attribute.
      * @return The Reader for the given Attribute.
      */
-    <ATTR_TYPE> AttributeReader<RECORD_TYPE, ATTR_TYPE, ATTR_DESC_TYPE> readerFor(final ATTR_DESC_TYPE attribute) {
-        final AttributeReader<RECORD_TYPE, ?, ? extends Attribute<?>> readerByAttribute = readersByAttribute.get(attribute);
+    protected <ATTR_TYPE> AttributeReader<RECORD_TYPE, ATTR_TYPE, ATTR_DESC_TYPE> readerFor(
+            final ATTR_DESC_TYPE attribute) {
+        final AttributeReader<RECORD_TYPE, ?, ? extends Attribute<?>> readerByAttribute = readersByAttribute
+                .get(attribute);
         if (readerByAttribute == null) {
             return (AttributeReader<RECORD_TYPE, ATTR_TYPE, ATTR_DESC_TYPE>) readersByType.get(attribute.getType());
         }
@@ -60,7 +63,7 @@ public abstract class AccessorConfig<RECORD_TYPE, ATTR_DESC_TYPE extends Attribu
      * @param <ATTR_TYPE> The Type of the Attribute.
      * @return The Writer for the given Attribute.
      */
-    <ATTR_TYPE> AttributeWriter<RECORD_TYPE, ATTR_TYPE, ATTR_DESC_TYPE> writerFor(
+    protected <ATTR_TYPE> AttributeWriter<RECORD_TYPE, ATTR_TYPE, ATTR_DESC_TYPE> writerFor(
             final ATTR_DESC_TYPE attribute) {
         final AttributeWriter<RECORD_TYPE, ?, ? extends Attribute<?>> writerByAttribute =
                 writersByAttribute.get(attribute);
@@ -74,7 +77,7 @@ public abstract class AccessorConfig<RECORD_TYPE, ATTR_DESC_TYPE extends Attribu
      * Creates a new Instance of a Record, which is usable by the
      *  {@link ReadAccessor}
      *  and {@link WriteAccessor}. To use this Method it is required
-     *  to register a Record Factory with {@link AccessorConfigBuilder#withRecordFactory(Supplier)}.
+     *  to register a Record Factory with {@link AccessorConfigBuilder#withRecordFactory(RecordFactory)}.
      *
      * @throws RuntimeException If no Record Factory is set
      * @return A new Record Instance
@@ -83,7 +86,7 @@ public abstract class AccessorConfig<RECORD_TYPE, ATTR_DESC_TYPE extends Attribu
         if (recordFactory == null) {
             throw new RuntimeException("Could not create record instance without RecordFactory");
         }
-        return recordFactory.get();
+        return recordFactory.createNewRecord();
     }
 
     /**
@@ -91,7 +94,7 @@ public abstract class AccessorConfig<RECORD_TYPE, ATTR_DESC_TYPE extends Attribu
      *  is created.
      * @param record the record for which the validation should be executed.
      */
-    void validateForRead(final RECORD_TYPE record) {
+    protected void validateForRead(final RECORD_TYPE record) {
         if (readValidator != null) {
             readValidator.validate(record);
         }
@@ -102,7 +105,7 @@ public abstract class AccessorConfig<RECORD_TYPE, ATTR_DESC_TYPE extends Attribu
      *  is created.
      * @param record the record for which the validation should be executed.
      */
-    void validateForWrite(final RECORD_TYPE record) {
+    protected void validateForWrite(final RECORD_TYPE record) {
         if (writeValidator != null) {
             writeValidator.validate(record);
         }
@@ -111,26 +114,46 @@ public abstract class AccessorConfig<RECORD_TYPE, ATTR_DESC_TYPE extends Attribu
     /**
      * @return All registered Readers.
      */
-    Map<Class<?>, AttributeReader<RECORD_TYPE, ?, ? extends Attribute<?>>> readers() {
+    protected Map<Class<?>, AttributeReader<RECORD_TYPE, ?, ? extends Attribute<?>>> readers() {
         return Collections.unmodifiableMap(readersByType);
     }
 
     /**
      * @return All registered Writers.
      */
-    Map<Class<?>, AttributeWriter<RECORD_TYPE, ?, ? extends Attribute<?>>> writers() {
+    protected Map<Class<?>, AttributeWriter<RECORD_TYPE, ?, ? extends Attribute<?>>> writers() {
         return Collections.unmodifiableMap(writersByType);
     }
 
-    Supplier<RECORD_TYPE> recordFactory() {
+    protected RecordFactory<RECORD_TYPE> recordFactory() {
         return recordFactory;
     }
 
-    RecordValidator<RECORD_TYPE> readValidator() {
+    protected RecordValidator<RECORD_TYPE> readValidator() {
         return readValidator;
     }
 
-    RecordValidator<RECORD_TYPE> writeValidator() {
+    protected RecordValidator<RECORD_TYPE> writeValidator() {
         return writeValidator;
+    }
+
+    /**
+     * Creates a new {@link ReadAccessor} for the given record.
+     *
+     * @param record to read from
+     * @return a new {@code ReadAccessor} for the record.
+     */
+    public ReadAccessor<RECORD_TYPE, ATTR_DESC_TYPE> newReadAccessor(final RECORD_TYPE record) {
+        return new ReadAccessor<>(this, record);
+    }
+
+    /**
+     * Creates a new {@link WriteAccessor} for the given record.
+     *
+     * @param record to write to
+     * @return a new {@code WriteAccessor} for the record.
+     */
+    public WriteAccessor<RECORD_TYPE, ATTR_DESC_TYPE> newWriteAccessor(final RECORD_TYPE record) {
+        return new WriteAccessor<>(this, record);
     }
 }

@@ -1,8 +1,8 @@
 package com.github.tinosteinort.flda.accessor.tuple;
 
-import java.util.function.Supplier;
+import com.github.tinosteinort.flda.accessor.RecordFactory;
 
-public class TupleFactory implements Supplier<Tuple> {
+public class TupleFactory implements RecordFactory<Tuple> {
 
     private final int size;
 
@@ -10,7 +10,7 @@ public class TupleFactory implements Supplier<Tuple> {
         this.size = size;
     }
 
-    @Override public Tuple get() {
+    @Override public Tuple createNewRecord() {
         return new Tuple(size);
     }
 }

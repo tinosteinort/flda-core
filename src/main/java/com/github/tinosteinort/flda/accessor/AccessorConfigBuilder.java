@@ -2,7 +2,6 @@ package com.github.tinosteinort.flda.accessor;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
 /**
  * This is the registry for all readers and writers for a specific record type.
@@ -11,13 +10,13 @@ import java.util.function.Supplier;
  */
 public class AccessorConfigBuilder<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE extends Attribute<?>> {
 
-    private final Map<Class<?>, AttributeReader<RECORD_TYPE, ?, ? extends Attribute<?>>> readersByType = new HashMap<>();
-    private final Map<Class<?>, AttributeWriter<RECORD_TYPE, ?, ? extends Attribute<?>>> writersByType = new HashMap<>();
-    private final Map<ATTRIBUTE_DESCRIPTION_TYPE, AttributeReader<RECORD_TYPE, ?, ? extends Attribute<?>>> readersByAttribute = new HashMap<>();
-    private final Map<ATTRIBUTE_DESCRIPTION_TYPE, AttributeWriter<RECORD_TYPE, ?, ? extends Attribute<?>>> writersByAttribute = new HashMap<>();
-    private Supplier<RECORD_TYPE> recordFactory;
-    private RecordValidator<RECORD_TYPE> readValidator;
-    private RecordValidator<RECORD_TYPE> writeValidator;
+    protected final Map<Class<?>, AttributeReader<RECORD_TYPE, ?, ? extends Attribute<?>>> readersByType = new HashMap<>();
+    protected final Map<Class<?>, AttributeWriter<RECORD_TYPE, ?, ? extends Attribute<?>>> writersByType = new HashMap<>();
+    protected final Map<ATTRIBUTE_DESCRIPTION_TYPE, AttributeReader<RECORD_TYPE, ?, ? extends Attribute<?>>> readersByAttribute = new HashMap<>();
+    protected final Map<ATTRIBUTE_DESCRIPTION_TYPE, AttributeWriter<RECORD_TYPE, ?, ? extends Attribute<?>>> writersByAttribute = new HashMap<>();
+    protected RecordFactory<RECORD_TYPE> recordFactory;
+    protected RecordValidator<RECORD_TYPE> readValidator;
+    protected RecordValidator<RECORD_TYPE> writeValidator;
 
     /**
      * Creates a empty {@code AccessorConfigBuilder} without any registerd Readers and Writers.
@@ -71,8 +70,9 @@ public class AccessorConfigBuilder<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE exten
      * @param <T> The Type of the Attribute.
      * @return The Builder.
      */
-    public <T> AccessorConfigBuilder<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> registerReader(final ATTRIBUTE_DESCRIPTION_TYPE attribute,
-                                                                                             final AttributeReader<RECORD_TYPE, T, ? extends Attribute<T>> reader) {
+    public <T> AccessorConfigBuilder<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> registerReader(
+            final ATTRIBUTE_DESCRIPTION_TYPE attribute,
+            final AttributeReader<RECORD_TYPE, T, ? extends Attribute<T>> reader) {
         readersByAttribute.put(attribute, reader);
         return this;
     }
@@ -84,7 +84,8 @@ public class AccessorConfigBuilder<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE exten
      * @param <T> The Type of the Attribute.
      * @return The Builder.
      */
-    public <T> AccessorConfigBuilder<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> registerWriter(final ATTRIBUTE_DESCRIPTION_TYPE attribute,
+    public <T> AccessorConfigBuilder<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> registerWriter(
+            final ATTRIBUTE_DESCRIPTION_TYPE attribute,
             final AttributeWriter<RECORD_TYPE, T, ? extends Attribute<T>> writer) {
         writersByAttribute.put(attribute, writer);
         return this;
@@ -93,10 +94,11 @@ public class AccessorConfigBuilder<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE exten
     /**
      * Sets a Factory which can create a new Instance of a Record.
      *
-     * @param recordFactory
+     * @param recordFactory the factory which can create records of the given type.
      * @return The Builder.
      */
-    public AccessorConfigBuilder<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> withRecordFactory(final Supplier<RECORD_TYPE> recordFactory) {
+    public AccessorConfigBuilder<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> withRecordFactory(
+            final RecordFactory<RECORD_TYPE> recordFactory) {
         this.recordFactory = recordFactory;
         return this;
     }
@@ -108,7 +110,8 @@ public class AccessorConfigBuilder<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE exten
      * @param validator the validator which should validate a record.
      * @return The Builder.
      */
-    public AccessorConfigBuilder<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> withReadValidator(final RecordValidator<RECORD_TYPE> validator) {
+    public AccessorConfigBuilder<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> withReadValidator(
+            final RecordValidator<RECORD_TYPE> validator) {
         this.readValidator = validator;
         return this;
     }
@@ -120,7 +123,8 @@ public class AccessorConfigBuilder<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE exten
      * @param validator the validator which should validate a record.
      * @return The Builder.
      */
-    public AccessorConfigBuilder<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> withWriteValidator(final RecordValidator<RECORD_TYPE> validator) {
+    public AccessorConfigBuilder<RECORD_TYPE, ATTRIBUTE_DESCRIPTION_TYPE> withWriteValidator(
+            final RecordValidator<RECORD_TYPE> validator) {
         this.writeValidator = validator;
         return this;
     }
