@@ -13,6 +13,10 @@ public class Tuple {
         this.data = new Object[size];
     }
 
+    public Tuple(final Object... data) {
+        this.data = data;
+    }
+
     public void set(final int index, final Object object) {
         data[index] = object;
     }
