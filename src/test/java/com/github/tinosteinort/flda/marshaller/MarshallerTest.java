@@ -1,5 +1,7 @@
-package com.github.tinosteinort.flda.accessor;
+package com.github.tinosteinort.flda.marshaller;
 
+import com.github.tinosteinort.flda.accessor.AccessorConfig;
+import com.github.tinosteinort.flda.accessor.AccessorConfigBuilder;
 import com.github.tinosteinort.flda.accessor.tuple.IntegerTupleAttributeReader;
 import com.github.tinosteinort.flda.accessor.tuple.IntegerTupleAttributeWriter;
 import com.github.tinosteinort.flda.accessor.tuple.StringTupleAttributeReader;
@@ -48,13 +50,12 @@ public class MarshallerTest {
 
     @Test public void unmarshall() {
 
-        Person person = new Person("Neo", 456);
         Tuple tuple = new Tuple("Neo", 456);
         Person newPerson = marshaller.unmarshall(tuple, new Person());
 
         assertNotNull(newPerson);
-        assertEquals("Neo", person.getName());
-        assertEquals(456, person.getAge());
+        assertEquals("Neo", newPerson.getName());
+        assertEquals(456, newPerson.getAge());
     }
 }
 
